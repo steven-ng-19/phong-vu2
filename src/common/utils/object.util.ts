@@ -1,11 +1,11 @@
-import { snakeToCamel } from ".";
+import { snakeToCamel } from '.';
 
 export function isArray(o: unknown) {
   return Array.isArray(o);
 }
 
 export function isObject(o: unknown) {
-  return o === Object(o) && !isArray(o) && typeof o !== "function";
+  return o === Object(o) && !isArray(o) && typeof o !== 'function';
 }
 
 export function snakeToCamelObject(o: any) {

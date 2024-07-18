@@ -1,15 +1,15 @@
-import { ALPHANUMERIC_CHARSET } from "@common/constants";
+import { ALPHANUMERIC_CHARSET } from '@common/constants';
 
 export function formatUnicorn(
   input: string,
-  args: Record<string, string | number>
+  args: Record<string, string | number>,
 ): string {
   let output = input.toString();
 
   for (const arg in args) {
     output = output.replace(
-      new RegExp(`{{${arg}}}`, "gi"),
-      args[arg].toString()
+      new RegExp(`{{${arg}}}`, 'gi'),
+      args[arg].toString(),
     );
   }
 
@@ -18,9 +18,9 @@ export function formatUnicorn(
 
 export function randomString(
   length: number,
-  charset = ALPHANUMERIC_CHARSET
+  charset = ALPHANUMERIC_CHARSET,
 ): string {
-  let result = "";
+  let result = '';
 
   for (let i = 0; i < length; i++) {
     result += charset.charAt(Math.floor(Math.random() * charset.length));
@@ -31,6 +31,6 @@ export function randomString(
 
 export function snakeToCamel(s: string) {
   return s.replace(/([-_][a-z])/gi, ($1) => {
-    return $1.toUpperCase().replace("-", "").replace("_", "");
+    return $1.toUpperCase().replace('-', '').replace('_', '');
   });
 }

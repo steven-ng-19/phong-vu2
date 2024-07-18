@@ -1,3 +1,3 @@
-import * as Joi from "joi";
+import { z } from 'zod';
 
-export const BaseValidator = Joi.object().options({ stripUnknown: true });
+export const BaseValidator = z.object({});

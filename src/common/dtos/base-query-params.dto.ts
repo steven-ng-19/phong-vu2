@@ -1,20 +1,14 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
+import { createZodDto } from '@anatine/zod-nestjs';
+import { z } from 'zod';
 
-export class BaseQueryParams {
-  @ApiPropertyOptional()
-  page?: number;
+const SortOrderSchema = z.enum([Prisma.SortOrder.asc, Prisma.SortOrder.desc]);
 
-  @ApiPropertyOptional()
-  limit?: number;
+const BaseQuerySchema = z.object({
+  page: z.number().optional(),
+  limit: z.number().optional(),
+  search: z.string().optional(),
+  sort: z.record(z.string(), SortOrderSchema).optional(),
+});
 
-  @ApiPropertyOptional()
-  search?: string;
-
-  @ApiPropertyOptional({
-    enum: ['asc', 'desc'],
-  })
-  // sort?: {
-  //   [key: string]: Prisma.SortOrder;
-  // };
-}
+export class BaseQueryParams extends createZodDto(BaseQuerySchema) {}

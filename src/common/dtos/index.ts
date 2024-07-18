@@ -1,1 +1,1 @@
-export * from "./base-query-params.dto";
+export * from './base-query-params.dto';
