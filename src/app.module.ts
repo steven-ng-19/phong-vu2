@@ -1,12 +1,13 @@
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { AllExceptionsFilter } from '@common/filters';
-import { CONFIG_VAR } from './configs';
+import { AuthModule } from '@modules/auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 import { ConfigSchema } from '@config/config.schema';
 import { Environment } from '@common/enums';
 import { Module } from '@nestjs/common';
 import { ResponseTransformInterceptor } from '@common/interceptors';
+import { UserModule } from '@modules/users/user.module';
 
 @Module({
   imports: [
@@ -14,12 +15,16 @@ import { ResponseTransformInterceptor } from '@common/interceptors';
       envFilePath: `.env.${process.env.NODE_ENV || Environment.DEVELOPMENT}`,
       isGlobal: true,
       cache: true,
-      validationSchema: ConfigSchema,
+      validate(config) {
+        return ConfigSchema.parse(config);
+      },
     }),
 
     // Shared modules
 
     // Feature modules,
+    AuthModule,
+    UserModule,
 
     // Realtime
   ],

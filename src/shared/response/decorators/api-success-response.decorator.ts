@@ -1,10 +1,11 @@
-import { HttpSuccessResponse } from "@common/responses";
-import { Type, applyDecorators } from "@nestjs/common";
-import { ApiExtraModels, ApiOkResponse, getSchemaPath } from "@nestjs/swagger";
+import { ApiExtraModels, ApiOkResponse, getSchemaPath } from '@nestjs/swagger';
+import { Type, applyDecorators } from '@nestjs/common';
+
+import { HttpSuccessResponse } from '@common/responses';
 
 export function ApiSuccessResponse<T extends Type<unknown>>(
   data: T,
-  isArray = false
+  isArray = false,
 ) {
   return applyDecorators(
     ApiExtraModels(HttpSuccessResponse, data),
@@ -13,15 +14,15 @@ export function ApiSuccessResponse<T extends Type<unknown>>(
         allOf: [
           { $ref: getSchemaPath(HttpSuccessResponse) },
           {
-            type: "object",
+            type: 'object',
             properties: {
               data: isArray
-                ? { type: "array", items: { $ref: getSchemaPath(data) } }
+                ? { type: 'array', items: { $ref: getSchemaPath(data) } }
                 : { $ref: getSchemaPath(data) },
             },
           },
         ],
       },
-    })
+    }),
   );
 }

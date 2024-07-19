@@ -2,18 +2,18 @@ import {
   ApiErrorResponse,
   ApiPaginateResponse,
   ApiPaginateResponseInput,
-} from "./dtos";
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@common/constants";
+} from './dtos';
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@common/constants';
 
-import { Injectable } from "@nestjs/common";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { ResponseMessageCode } from "./enums";
-import { stringify } from "qs";
+import { Injectable } from '@nestjs/common';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { ResponseMessageCode } from './enums';
+import { stringify } from 'qs';
 
 @Injectable()
 export class ResponseService {
   public static paginateResponse<T>(
-    input: ApiPaginateResponseInput<T>
+    input: ApiPaginateResponseInput<T>,
   ): ApiPaginateResponse<T> {
     const { count, data, query = {}, req } = input;
     const {
@@ -22,7 +22,7 @@ export class ResponseService {
       ...restQueryParams
     } = query;
 
-    const url = req?.path ?? "";
+    const url = req?.path ?? '';
     const nextPage = page * limit < count ? page + 1 : null;
     const previousPage = page > 1 ? page - 1 : null;
 

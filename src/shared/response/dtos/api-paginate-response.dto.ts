@@ -1,16 +1,16 @@
-import { Request } from "express";
-import { BaseQueryParams } from "@common/dtos";
+// import { BaseQueryParams } from '@common/dtos';
+// import { Request } from 'express';
 
-export class ApiPaginateResponseInput<T> {
-  count: number;
-  data: T[];
-  query?: BaseQueryParams;
-  req?: Request;
-}
+// export class ApiPaginateResponseInput<T> {
+//   count: number;
+//   data: T[];
+//   query?: BaseQueryParams;
+//   req?: Request;
+// }
 
-export class ApiPaginateResponse<T> {
-  next?: string;
-  previous?: string;
-  count: number;
-  results: T[];
-}
+// export class ApiPaginateResponse<T> {
+//   next?: string;
+//   previous?: string;
+//   count: number;
+//   results: T[];
+// }

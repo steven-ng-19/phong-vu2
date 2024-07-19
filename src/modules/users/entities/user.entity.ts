@@ -1,4 +1,6 @@
+import { Gender } from '@common/enums';
 import { UserModel } from '../models';
+import { createZodDto } from '@anatine/zod-nestjs';
 import { parsePhoneNumber } from 'awesome-phonenumber';
 
 export const UserShape = UserModel.shape;
@@ -13,21 +15,31 @@ export const UserEntity = UserModel.extend({
     .trim()
     .refine((value) => parsePhoneNumber(value).valid),
   [UserKeys.password]: UserShape.password.trim(),
-  [UserKeys.isEmailVerifiled]: UserShape.isEmailVerifiled.trim(),
-  [UserKeys.isPhoneVerifiled]: UserShape.isPhoneVerifiled.trim(),
+  [UserKeys.isEmailVerifiled]: UserShape.isEmailVerifiled,
+  [UserKeys.isPhoneVerifiled]: UserShape.isPhoneVerifiled,
   [UserKeys.firstName]: UserShape.firstName.trim(),
-  [UserKeys.lastName]: UserShape.lastName.trim().optional(),
-  [UserKeys.avatar]: UserShape.avatar.trim().optional(),
-  [UserKeys.cover]: UserShape.cover.trim().optional(),
+  [UserKeys.lastName]: UserShape.lastName.trim().optional().nullable(),
+  [UserKeys.avatar]: UserShape.avatar.trim().optional().nullable(),
+  [UserKeys.cover]: UserShape.cover.trim().optional().nullable(),
   [UserKeys.role]: UserShape.role.trim(),
-  [UserKeys.dob]: UserShape.dob.optional(),
-  [UserKeys.gender]: UserShape.gender.trim(),
+  [UserKeys.dob]: UserShape.dob.optional().nullable(),
+  [UserKeys.gender]: UserShape.gender.default(Gender.OTHER).optional(),
+
   [UserKeys.emailVerificationToken]: UserShape.emailVerificationToken
     .trim()
-    .optional(),
-  [UserKeys.resetPasswordToken]: UserShape.resetPasswordToken.trim().optional(),
-  [UserKeys.customerId]: UserShape.customerId.trim().optional(),
-  [UserKeys.registrationToken]: UserShape.registrationToken.trim().optional(),
+    .optional()
+    .nullable(),
+  [UserKeys.resetPasswordToken]: UserShape.resetPasswordToken
+    .trim()
+    .optional()
+    .nullable(),
+  [UserKeys.customerId]: UserShape.customerId.trim().optional().nullable(),
+  [UserKeys.registrationToken]: UserShape.registrationToken
+    .trim()
+    .optional()
+    .nullable(),
   [UserKeys.createdAt]: UserShape.createdAt.optional(),
   [UserKeys.updatedAt]: UserShape.updatedAt.optional(),
 });
+
+export class UserDto extends createZodDto(UserEntity) {}

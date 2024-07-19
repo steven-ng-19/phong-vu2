@@ -1,6 +1,4 @@
 import * as compression from 'compression';
-import * as fs from 'fs';
-import * as path from 'path';
 
 import { CONFIG_VAR, DEFAULT_PORT } from '@config/index';
 import {
@@ -23,7 +21,7 @@ async function getApp() {
   app.use(compression());
   app.use(helmet());
 
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  // app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   app.setGlobalPrefix('/api');
   app.enableVersioning({

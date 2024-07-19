@@ -1,6 +1,7 @@
-import { HttpPaginateSuccessResponse } from "@common/responses";
-import { Type, applyDecorators } from "@nestjs/common";
-import { ApiExtraModels, ApiOkResponse, getSchemaPath } from "@nestjs/swagger";
+import { ApiExtraModels, ApiOkResponse, getSchemaPath } from '@nestjs/swagger';
+import { Type, applyDecorators } from '@nestjs/common';
+
+import { HttpPaginateSuccessResponse } from '@common/responses';
 
 export function ApiPaginateSuccessResponse<T extends Type<unknown>>(data: T) {
   return applyDecorators(
@@ -12,13 +13,13 @@ export function ApiPaginateSuccessResponse<T extends Type<unknown>>(data: T) {
           {
             properties: {
               data: {
-                type: "array",
+                type: 'array',
                 items: { $ref: getSchemaPath(data) },
               },
             },
           },
         ],
       },
-    })
+    }),
   );
 }
