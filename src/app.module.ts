@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ConfigSchema } from '@config/config.schema';
 import { Environment } from '@common/enums';
 import { Module } from '@nestjs/common';
+import { PrismaModule } from '@shared/prisma/prisma.module';
 import { ResponseTransformInterceptor } from '@common/interceptors';
 import { UserModule } from '@modules/users/user.module';
 
@@ -21,6 +22,8 @@ import { UserModule } from '@modules/users/user.module';
     }),
 
     // Shared modules
+
+    PrismaModule,
 
     // Feature modules,
     AuthModule,

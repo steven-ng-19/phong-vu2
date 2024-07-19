@@ -1,5 +1,6 @@
 import { AdminUserController } from './controllers';
 import { Module } from '@nestjs/common';
+import { PrismaModule } from '@shared/prisma/prisma.module';
 import { UserMapper } from './mappers';
 import { UserService } from './services';
 
