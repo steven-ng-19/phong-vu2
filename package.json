@@ -2,7 +2,7 @@
   "name": "phong-vu-api",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "Jacob",
   "private": true,
   "license": "UNLICENSED",
   "engines": {
@@ -43,6 +43,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@prisma/client": "^5.17.0",
     "@types/compression": "^1.7.5",
+    "awesome-phonenumber": "^6.10.0",
     "compression": "^1.7.4",
     "dotenv": "^16.4.5",
     "helmet": "^7.1.0",

@@ -12,6 +12,9 @@ model Product {
     discount    Int?      @default(0)
     deletedAt   DateTime?
 
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @map("updated_at")
+
     category   Category    @relation(fields: [categoryId], references: [id])
     galleries  Gallery[]
     orderItems OrderItem[]

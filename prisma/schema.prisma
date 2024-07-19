@@ -25,8 +25,10 @@ model Address {
   longitude Int?
   isDefault Boolean @default(false) @map("is_default")
 
-  user  User    @relation(fields: [userId], references: [id])
-  Order Order[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id])
 
   @@map("addresses")
 }
@@ -75,6 +77,9 @@ model Category {
   description  String  @db.Text
   image        String  @db.VarChar(100)
   isDeprecated Boolean @default(false)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @map("updated_at")
 
   products Product[]
 
@@ -153,9 +158,8 @@ model OrderItem {
 }
 
 model Order {
-  id        String @id @default(uuid()) @db.VarChar(36)
-  userId    String @db.VarChar(36)
-  addressId String @db.VarChar(36)
+  id     String @id @default(uuid()) @db.VarChar(36)
+  userId String @db.VarChar(36)
 
   status         String  @db.VarChar(20)
   totalPrice     Float   @map("total_price")
@@ -163,9 +167,12 @@ model Order {
   paymentId      String? @map("payment_id") @db.VarChar(255)
   paymentDetails Json?
   notes          String  @db.VarChar(255)
+  addressData    Json
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @map("updated_at")
 
   user       User        @relation(fields: [userId], references: [id])
-  address    Address     @relation(fields: [addressId], references: [id])
   orderItems OrderItem[]
 
   @@map("orders")
@@ -184,6 +191,9 @@ model Product {
   image       String    @db.Text
   discount    Int?      @default(0)
   deletedAt   DateTime?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @map("updated_at")
 
   category   Category    @relation(fields: [categoryId], references: [id])
   galleries  Gallery[]
@@ -205,6 +215,9 @@ model Promotion {
   isDefault   Boolean  @default(false)
   applyOn     String?  @map("apply_on")
 
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @map("updated_at")
+
   condition Condition @relation(fields: [conditionId], references: [id])
   benefit   Benefit   @relation(fields: [benefitId], references: [id])
 
@@ -214,7 +227,7 @@ model Promotion {
 model User {
   id String @id @default(uuid()) @db.VarChar(36)
 
-  userName               String    @db.VarChar(50)
+  userName               String    @map("user_name") @db.VarChar(50)
   email                  String    @db.VarChar(50)
   phone                  String    @db.VarChar(20)
   password               String    @db.VarChar(72)
@@ -230,7 +243,10 @@ model User {
   emailVerificationToken String?   @map("email_verification_token") @db.Text
   resetPasswordToken     String?   @map("reset_password_token") @db.Text
   customerId             String?   @map("customer_id") @db.VarChar(100)
-  registrationTokens     String[]  @default([]) @map("registration_tokens")
+  registrationToken      String?   @map("registration_tokens")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @map("updated_at")
 
   addresses Address[]
   cartItems CartItem[]

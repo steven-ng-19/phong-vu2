@@ -1,7 +1,6 @@
 model Order {
-    id        String @id @default(uuid()) @db.VarChar(36)
-    userId    String @db.VarChar(36)
-    addressId String @db.VarChar(36)
+    id     String @id @default(uuid()) @db.VarChar(36)
+    userId String @db.VarChar(36)
 
     status         String  @db.VarChar(20)
     totalPrice     Float   @map("total_price")
@@ -9,9 +8,12 @@ model Order {
     paymentId      String? @map("payment_id") @db.VarChar(255)
     paymentDetails Json?
     notes          String  @db.VarChar(255)
+    addressData    Json
+
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @map("updated_at")
 
     user       User        @relation(fields: [userId], references: [id])
-    address    Address     @relation(fields: [addressId], references: [id])
     orderItems OrderItem[]
 
     @@map("orders")
