@@ -1,4 +1,5 @@
 import { CategoryModel } from '../models';
+import { createZodDto } from '@anatine/zod-nestjs';
 
 export const CategoryShape = CategoryModel.shape;
 
@@ -16,3 +17,5 @@ export const CategoryEntity = CategoryModel.extend({
   [CategoryKeys.createdAt]: CategoryShape.createdAt.optional(),
   [CategoryKeys.updatedAt]: CategoryShape.updatedAt.optional(),
 });
+
+export class CategoryDto extends createZodDto(CategoryEntity) {}

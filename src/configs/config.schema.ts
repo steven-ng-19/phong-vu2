@@ -3,7 +3,6 @@ import * as Zod from 'zod';
 import { CONFIG_VAR, DEFAULT_PORT } from '@config/index';
 
 import { Environment } from '@common/enums';
-import { stringify } from 'qs';
 
 export const ConfigSchema = Zod.object({
   [CONFIG_VAR.NODE_ENV]: Zod.string().trim().default(Environment.DEVELOPMENT),
@@ -20,11 +19,13 @@ export const ConfigSchema = Zod.object({
 
   // JWT SECRET TOKEN TYPE
   [CONFIG_VAR.FORGOT_JWT_SECRET]: Zod.string().trim(),
+  [CONFIG_VAR.EMAIL_JWT_SECRET]: Zod.string().trim(),
 
   // JWT EXPIRES IN
   [CONFIG_VAR.JWT_ACCESS_EXPIRES_IN]: Zod.string().trim(),
   [CONFIG_VAR.JWT_REFRESH_EXPIRES_IN]: Zod.string().trim(),
   [CONFIG_VAR.JWT_FORGOT_EXPIRES_IN]: Zod.string().trim(),
+  [CONFIG_VAR.JWT_EMAIL_EXPIRES_IN]: Zod.string().trim(),
 
   // REDIS
   [CONFIG_VAR.REDIS_HOST]: Zod.string().trim(),
@@ -47,4 +48,8 @@ export const ConfigSchema = Zod.object({
   //GOOGLE
   [CONFIG_VAR.APP_GOOGLE_ID]: Zod.string().trim(),
   [CONFIG_VAR.APP_GOOGLE_SECRET]: Zod.string().trim(),
+
+  // MAILGUN
+  [CONFIG_VAR.MAIL_USER]: Zod.string().trim(),
+  [CONFIG_VAR.MAIL_PASSWORD]: Zod.string().trim(),
 });

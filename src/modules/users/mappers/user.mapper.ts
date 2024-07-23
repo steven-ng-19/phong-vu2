@@ -1,6 +1,13 @@
+import {
+  UserCreateParams,
+  UserFindByConditionsParams,
+  UserFindByKeyParams,
+  UserPrimaryKey,
+  UserUpdateParams,
+} from '../types/user.type';
+
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { UserFindByKeyParams } from '../types/user.type';
 
 @Injectable()
 export class UserMapper {
@@ -25,6 +32,46 @@ export class UserMapper {
         avatar: true,
         cover: true,
         gender: true,
+      },
+    };
+  }
+
+  findOne(params: UserFindByConditionsParams): Prisma.UserFindFirstArgs {
+    const { excludes = {}, ...restData } = params;
+
+    return {
+      where: {
+        ...restData,
+        ...Object.fromEntries(
+          Object.entries(excludes).map(([key, value]) => [
+            key,
+            { notIn: value },
+          ]),
+        ),
+      },
+    };
+  }
+
+  create(data: UserCreateParams): Prisma.UserCreateArgs {
+    return {
+      data: {
+        ...data,
+        role: data.role as string,
+        gender: data.gender as string,
+      },
+    };
+  }
+
+  update(
+    { id }: UserPrimaryKey,
+    data: UserUpdateParams,
+  ): Prisma.UserUpdateArgs {
+    return {
+      where: {
+        id,
+      },
+      data: {
+        ...data,
       },
     };
   }

@@ -1,17 +1,12 @@
 import * as compression from 'compression';
 
 import { CONFIG_VAR, DEFAULT_PORT } from '@config/index';
-import {
-  ClassSerializerInterceptor,
-  INestApplication,
-  Logger,
-  VersioningType,
-} from '@nestjs/common';
-import { NestFactory, Reflector } from '@nestjs/core';
+import { INestApplication, Logger, VersioningType } from '@nestjs/common';
 
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { NestFactory } from '@nestjs/core';
 import helmet from 'helmet';
 
 async function getApp() {
@@ -42,7 +37,7 @@ async function bootstrapServer() {
   const app = await getApp();
 
   // Seed data
-  await seedData(app);
+  // await seedData(app);
 
   // Setup Swagger
   // setupSwagger(app);

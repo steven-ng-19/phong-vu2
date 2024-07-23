@@ -1,9 +1,14 @@
-import { FindUserByEmailDto } from '../dtos';
+import { FindUserByEmailDto, FindUserByIdDto } from '../dtos';
+import {
+  User,
+  UserCreateParams,
+  UserPrimaryKey,
+  UserUpdateParams,
+} from '../types/user.type';
+
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { PrismaService } from '@shared/prisma/prisma.service';
-import { RegisterRequestDto } from '@modules/auth/dtos';
-import { User } from '../types/user.type';
+import { UserFindByConditionsParams } from './../types/user.type';
 import { UserMapper } from '../mappers';
 
 @Injectable()
@@ -20,5 +25,37 @@ export class UserService {
     return user;
   }
 
-  async create(data: RegisterRequestDto): Promise<any> {}
+  async findOneById(query: FindUserByIdDto): Promise<User | null> {
+    const mappedData = this._userMapper.findOneByKey(query);
+
+    const user = await this._prismaService.user.findFirst(mappedData);
+
+    return user;
+  }
+
+  async findOne(params: UserFindByConditionsParams): Promise<User | null> {
+    const mappedData = this._userMapper.findOne(params);
+
+    const user = await this._prismaService.user.findFirst(mappedData);
+
+    return user;
+  }
+
+  // async findOne(query: Find)
+
+  async create(data: UserCreateParams): Promise<User> {
+    const mappedData = this._userMapper.create(data);
+
+    const user = await this._prismaService.user.create(mappedData);
+
+    return user;
+  }
+
+  async update(key: UserPrimaryKey, data: UserUpdateParams): Promise<User> {
+    const mappedData = this._userMapper.update(key, data);
+
+    const user = await this._prismaService.user.update(mappedData);
+
+    return user;
+  }
 }

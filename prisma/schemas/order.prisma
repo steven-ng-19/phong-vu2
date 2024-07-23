@@ -11,7 +11,7 @@ model Order {
     addressData    Json
 
     createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @map("updated_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
 
     user       User        @relation(fields: [userId], references: [id])
     orderItems OrderItem[]

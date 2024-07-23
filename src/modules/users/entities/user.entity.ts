@@ -1,4 +1,5 @@
-import { Gender } from '@common/enums';
+import { Gender, UserRole } from '@common/enums';
+
 import { UserModel } from '../models';
 import { createZodDto } from '@anatine/zod-nestjs';
 import { parsePhoneNumber } from 'awesome-phonenumber';
@@ -15,15 +16,19 @@ export const UserEntity = UserModel.extend({
     .trim()
     .refine((value) => parsePhoneNumber(value).valid),
   [UserKeys.password]: UserShape.password.trim(),
-  [UserKeys.isEmailVerifiled]: UserShape.isEmailVerifiled,
-  [UserKeys.isPhoneVerifiled]: UserShape.isPhoneVerifiled,
+  [UserKeys.isEmailVerifiled]: UserShape.isEmailVerifiled
+    .default(false)
+    .optional(),
+  [UserKeys.isPhoneVerifiled]: UserShape.isPhoneVerifiled
+    .default(false)
+    .optional(),
   [UserKeys.firstName]: UserShape.firstName.trim(),
   [UserKeys.lastName]: UserShape.lastName.trim().optional().nullable(),
   [UserKeys.avatar]: UserShape.avatar.trim().optional().nullable(),
   [UserKeys.cover]: UserShape.cover.trim().optional().nullable(),
-  [UserKeys.role]: UserShape.role.trim(),
+  [UserKeys.role]: UserShape.role.trim().default(UserRole.USER).optional(),
   [UserKeys.dob]: UserShape.dob.optional().nullable(),
-  [UserKeys.gender]: UserShape.gender.default(Gender.OTHER).optional(),
+  [UserKeys.gender]: UserShape.gender.default(Gender.OTHER),
 
   [UserKeys.emailVerificationToken]: UserShape.emailVerificationToken
     .trim()

@@ -5,6 +5,9 @@ model Condition {
     orderValueMax Float @map("order_value_max")
     minQuantity   Int   @default(1) @map("min_quantity")
 
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
     promotion Promotion?
 
     @@map("conditions")

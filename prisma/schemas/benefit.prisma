@@ -5,5 +5,8 @@ model Benefit {
     discount Discount @relation(fields: [discountId], references: [id])
     gifts    Gift[]
 
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
     @@map("benefits")
 }

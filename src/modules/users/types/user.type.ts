@@ -1,15 +1,18 @@
 import * as Zod from 'zod';
 
 import {
+  CREATE_PARAMS_WITHOUT_FIELDS,
+  UPDATE_PARAMS_WITHOUT_FIELDS,
+} from '@common/constants';
+import {
   EntityNotInFilter,
   EntityWithoutFields,
   OptionalNullAbleFields,
 } from '@common/types';
-import { UserDto, UserEntity } from '../entities';
 
-import { CREATE_PARAMS_WITHOUT_FIELDS } from '@common/constants';
+import { UserDto } from '../entities';
 
-export const UserParamsSchema = UserEntity;
+// export const UserParamsSchema = UserEntity;
 
 const UserUniqueKeyParams = Zod.union([
   Zod.object({
@@ -29,6 +32,17 @@ export type UserFindByKeyParams = Zod.infer<typeof UserUniqueKeyParams> & {
   excludes?: EntityNotInFilter<User>;
 };
 
-export type UserCreateParams = OptionalNullAbleFields<
-  EntityWithoutFields<User, (typeof CREATE_PARAMS_WITHOUT_FIELDS)[number]>
+export type UserCreateParams = EntityWithoutFields<
+  User,
+  (typeof CREATE_PARAMS_WITHOUT_FIELDS)[number]
 >;
+
+export type UserUpdateParams = Partial<
+  EntityWithoutFields<User, (typeof UPDATE_PARAMS_WITHOUT_FIELDS)[number]>
+>;
+
+export type UserPrimaryKey = Pick<User, 'id'>;
+
+export type UserFindByConditionsParams = Partial<User> & {
+  excludes?: EntityNotInFilter<User>;
+};
