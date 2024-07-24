@@ -8,7 +8,7 @@ import {
 } from '@nestjs/bull';
 
 import { AUTH_QUEUE_PROCCESS_NAME } from '@modules/auth/constants';
-import { AuthQueueService } from '@modules/auth/services/auth-queue.service';
+import { AuthQueueService } from '@modules/auth/services';
 import { Job } from 'bull';
 import { QUEUE_NAMES } from '../constants';
 
@@ -33,8 +33,8 @@ export class AuthConsumer {
     console.log('=============== On Queue Failed  ============');
   }
 
-  @Process(AUTH_QUEUE_PROCCESS_NAME.SEND_MAIL_REGISTER)
-  async sendMailRegister(job: Job) {
-    await this._authQueueService.handleSendRegisterMail(job.data);
-  }
+  // @Process(AUTH_QUEUE_PROCCESS_NAME.CHANGE_PASSWORD)
+  // async handleChangePassword(job: Job) {
+  //   await this._authQueueService.handleChangePassword(job.data);
+  // }
 }

@@ -11,19 +11,11 @@ export const ConfigSchema = Zod.object({
   // DATABASE
   [CONFIG_VAR.DATABASE_URL]: Zod.string().trim(),
 
-  // JWT
-  [CONFIG_VAR.USER_JWT_SECRET]: Zod.string().trim(),
-  [CONFIG_VAR.USER_JWT_REFRESH_SECRET]: Zod.string().trim(),
-  [CONFIG_VAR.ADMIN_JWT_SECRET]: Zod.string().trim(),
-  [CONFIG_VAR.ADMIN_JWT_REFRESH_SECRET]: Zod.string().trim(),
-
   // JWT SECRET TOKEN TYPE
   [CONFIG_VAR.FORGOT_JWT_SECRET]: Zod.string().trim(),
   [CONFIG_VAR.EMAIL_JWT_SECRET]: Zod.string().trim(),
 
   // JWT EXPIRES IN
-  [CONFIG_VAR.JWT_ACCESS_EXPIRES_IN]: Zod.string().trim(),
-  [CONFIG_VAR.JWT_REFRESH_EXPIRES_IN]: Zod.string().trim(),
   [CONFIG_VAR.JWT_FORGOT_EXPIRES_IN]: Zod.string().trim(),
   [CONFIG_VAR.JWT_EMAIL_EXPIRES_IN]: Zod.string().trim(),
 

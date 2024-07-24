@@ -9,8 +9,15 @@ export const FindUserByIdValidator = UserEntity.pick({
   id: true,
 });
 
+export const FindUserByClerkIdValidator = UserEntity.pick({
+  clerkId: true,
+});
+
 export class FindUserByEmailDto extends createZodDto(
   FindUserByEmailValidator,
 ) {}
 
 export class FindUserByIdDto extends createZodDto(FindUserByIdValidator) {}
+export class FindUserByClerkIdDto extends createZodDto(
+  FindUserByClerkIdValidator,
+) {}

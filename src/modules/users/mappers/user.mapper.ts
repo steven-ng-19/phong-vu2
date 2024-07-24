@@ -29,7 +29,6 @@ export class UserMapper {
       select: {
         id: true,
         email: true,
-        password: true,
         avatar: true,
         cover: true,
         gender: true,

@@ -1,6 +1,12 @@
-import { UserEntity } from '@modules/users/entities';
+import * as Zod from 'zod';
 
-export const LoginRequestValidator = UserEntity.pick({
-  email: true,
-  password: true,
+import { UserEntity } from '@modules/users/entities';
+import { createZodDto } from '@anatine/zod-nestjs';
+
+export const LoginRequestValidator = UserEntity.extend({
+  token: Zod.string().trim(),
+}).pick({
+  token: true,
 });
+
+export class LoginDto extends createZodDto(LoginRequestValidator) {}

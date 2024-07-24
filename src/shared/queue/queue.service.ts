@@ -2,6 +2,7 @@ import { InjectQueue } from '@nestjs/bull';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { QUEUE_NAMES } from './constants';
 import { Job, JobOptions, Queue } from 'bull';
+import { JobType } from './types';
 
 export const DEFAULT_OPTS: JobOptions = {
   attempts: 3, // The total number of attempts to try the job until it completes.
@@ -15,12 +16,12 @@ export class QueueService {
     @InjectQueue(QUEUE_NAMES.AUTH_QUEUE) private readonly _authQueue: Queue,
   ) {}
 
-  async addJob(job: any) {
-    const { queueName, proccessName, payload, opts } = job;
+  async addJob<T>(job: JobType<T>) {
+    const { queueName, processName, payload, opts } = job;
 
     switch (queueName) {
       case QUEUE_NAMES.AUTH_QUEUE:
-        await this._authQueue.add(proccessName, payload, opts).catch((err) => {
+        await this._authQueue.add(processName, payload, opts).catch((err) => {
           console.error(err);
         });
         break;

@@ -1,11 +1,12 @@
 import { AddressModel } from '../models';
+import { createZodDto } from '@anatine/zod-nestjs';
 import { parsePhoneNumber } from 'awesome-phonenumber';
 
 export const AddressShape = AddressModel.shape;
 
 export const AddressKeys = AddressModel.keyof().enum;
 
-export const AddressEntity = {
+export const AddressEntity = AddressModel.extend({
   [AddressKeys.id]: AddressShape.id.trim().uuid(),
   [AddressKeys.userId]: AddressShape.userId.trim().uuid(),
   [AddressKeys.fullName]: AddressShape.fullName.trim(),
@@ -22,4 +23,6 @@ export const AddressEntity = {
   [AddressKeys.isDefault]: AddressShape.isDefault.optional().default(false),
   [AddressKeys.createdAt]: AddressShape.createdAt.optional(),
   [AddressKeys.updatedAt]: AddressShape.updatedAt.optional(),
-};
+});
+
+export class AddressDto extends createZodDto(AddressEntity) {}

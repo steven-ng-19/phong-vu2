@@ -1,5 +1,6 @@
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 
+import { AddressModule } from '@modules/addresses/address.module';
 import { AllExceptionsFilter } from '@common/filters';
 import { AuthModule } from '@modules/auth/auth.module';
 import { ClerkModule } from '@shared/clerk/clerk.module';
@@ -36,6 +37,7 @@ import { UserModule } from '@modules/users/user.module';
     // Feature modules,
     AuthModule,
     UserModule,
+    AddressModule,
 
     // Realtime
   ],

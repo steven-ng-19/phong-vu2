@@ -1,4 +1,8 @@
-import { FindUserByEmailDto, FindUserByIdDto } from '../dtos';
+import {
+  FindUserByClerkIdDto,
+  FindUserByEmailDto,
+  FindUserByIdDto,
+} from '../dtos';
 import {
   User,
   UserCreateParams,
@@ -26,6 +30,14 @@ export class UserService {
   }
 
   async findOneById(query: FindUserByIdDto): Promise<User | null> {
+    const mappedData = this._userMapper.findOneByKey(query);
+
+    const user = await this._prismaService.user.findFirst(mappedData);
+
+    return user;
+  }
+
+  async findOneByClerkId(query: FindUserByClerkIdDto): Promise<User | null> {
     const mappedData = this._userMapper.findOneByKey(query);
 
     const user = await this._prismaService.user.findFirst(mappedData);

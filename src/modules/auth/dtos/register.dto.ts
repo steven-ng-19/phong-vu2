@@ -1,16 +1,12 @@
+import * as Zod from 'zod';
+
 import { UserEntity } from '@modules/users/entities';
 import { createZodDto } from '@anatine/zod-nestjs';
 
-export const RegisterRequestValidator = UserEntity.pick({
-  userName: true,
-  email: true,
-  password: true,
-  phone: true,
-  firstName: true,
-  lastName: true,
-  dob: true,
-  gender: true,
-  clerkId: true,
+export const RegisterRequestValidator = UserEntity.extend({
+  token: Zod.string().trim(),
+}).pick({
+  token: true,
 });
 
 export class RegisterRequestDto extends createZodDto(

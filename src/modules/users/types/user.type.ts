@@ -24,6 +24,9 @@ const UserUniqueKeyParams = Zod.union([
   Zod.object({
     customerId: Zod.string(),
   }),
+  Zod.object({
+    clerkId: Zod.string(),
+  }),
 ]);
 
 export type User = UserDto;

@@ -24,39 +24,12 @@ export class ClerkService {
     }
   }
 
-  async resetPassword(userId: string, password: string): Promise<void> {
-    try {
-      const user = await this._clerkClient.users.updateUser(userId, {
-        password,
-        passwordHasher: 'bcrypt',
-      });
-    } catch (error) {
-      throw new BadRequestException(error);
-    }
-  }
-
-  async verifyPassword(
-    userId: string,
-    password: string,
-  ): Promise<{
-    verified: true;
-  }> {
-    try {
-      const isMatch = await this._clerkClient.users.verifyPassword({
-        userId,
-        password,
-      });
-
-      return isMatch;
-    } catch (error) {
-      throw new BadRequestException(error);
-    }
-  }
-
   async updateProfile(userId: string, data: any) {
     try {
       const user = await this._clerkClient.users.updateUser(userId, data);
       return user;
-    } catch (error) {}
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
   }
 }

@@ -1,60 +1,35 @@
 import { DEFAULT_OPTS, QueueService } from '@shared/queue/queue.service';
 
 import { AUTH_QUEUE_PROCCESS_NAME } from '../constants';
-import { AuthQueueSendMailRegisterType } from '../types/auth-queue.type';
-import Bull from 'bull';
+import { ClerkService } from '@shared/clerk/clerk.service';
 import { Injectable } from '@nestjs/common';
 import { QUEUE_NAMES } from '@shared/queue/constants';
-import { SendMailService } from '@shared/email/send-mail.service';
-import { readTemplate } from '@common/utils/template.util';
 
 @Injectable()
 export class AuthQueueService {
   constructor(
     private readonly _queueService: QueueService,
-    private readonly _sendMailService: SendMailService,
+    private readonly _clerkService: ClerkService,
   ) {}
 
-  async addSendMailRegisterJob({
-    title,
-    content,
-    titleLink,
-    link,
-    to,
-    text,
-    subject,
-  }: AuthQueueSendMailRegisterType): Promise<void | Bull.Job<any>> {
-    const result = await this._queueService.addJob({
+  async addChangePasswordJob(clerkId: string, password: string) {
+    const job = await this._queueService.addJob<{
+      clerkId: string;
+      password: string;
+    }>({
       queueName: QUEUE_NAMES.AUTH_QUEUE,
-      proccessName: AUTH_QUEUE_PROCCESS_NAME.SEND_MAIL_REGISTER,
-      payload: { title, content, titleLink, link, to, text, subject },
+      processName: AUTH_QUEUE_PROCCESS_NAME.CHANGE_PASSWORD,
+      payload: {
+        clerkId,
+        password,
+      },
       opts: DEFAULT_OPTS,
     });
 
-    return result;
+    return job;
   }
 
-  async handleSendRegisterMail({
-    title,
-    content,
-    titleLink,
-    link,
-    to,
-    text,
-    subject,
-  }: AuthQueueSendMailRegisterType): Promise<void> {
-    const html = readTemplate({
-      title,
-      content,
-      titleLink,
-      link,
-    });
-
-    await this._sendMailService.sendMail({
-      to,
-      text,
-      subject,
-      html,
-    });
-  }
+  // handleChangePassword({ clerkId, password }) {
+  //   return this._clerkService.changePassword(clerkId, password);
+  // }
 }

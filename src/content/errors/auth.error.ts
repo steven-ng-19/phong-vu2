@@ -19,4 +19,8 @@ export const AUTH_ERRORS = {
     code: 'INVALID_TOKEN',
     message: 'Token is invalid or expired',
   },
+  INVALID_PASSWORD: {
+    code: 'INVALID_PASSWORD',
+    message: 'Invalid password',
+  },
 };

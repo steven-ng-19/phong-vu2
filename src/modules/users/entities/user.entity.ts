@@ -16,13 +16,7 @@ export const UserEntity = UserModel.extend({
   [UserKeys.phone]: UserShape.phone
     .trim()
     .refine((value) => parsePhoneNumber(value).valid),
-  [UserKeys.password]: UserShape.password.trim(),
-  [UserKeys.isEmailVerifiled]: UserShape.isEmailVerifiled
-    .default(false)
-    .optional(),
-  [UserKeys.isPhoneVerifiled]: UserShape.isPhoneVerifiled
-    .default(false)
-    .optional(),
+
   [UserKeys.firstName]: UserShape.firstName.trim(),
   [UserKeys.lastName]: UserShape.lastName.trim().optional().nullable(),
   [UserKeys.avatar]: UserShape.avatar.trim().optional().nullable(),
@@ -31,19 +25,12 @@ export const UserEntity = UserModel.extend({
   [UserKeys.dob]: UserShape.dob.optional().nullable(),
   [UserKeys.gender]: UserShape.gender.default(Gender.OTHER),
 
-  [UserKeys.emailVerificationToken]: UserShape.emailVerificationToken
-    .trim()
-    .optional()
-    .nullable(),
   [UserKeys.resetPasswordToken]: UserShape.resetPasswordToken
     .trim()
     .optional()
     .nullable(),
   [UserKeys.customerId]: UserShape.customerId.trim().optional().nullable(),
-  [UserKeys.registrationToken]: UserShape.registrationToken
-    .trim()
-    .optional()
-    .nullable(),
+
   [UserKeys.createdAt]: UserShape.createdAt.optional(),
   [UserKeys.updatedAt]: UserShape.updatedAt.optional(),
 });
