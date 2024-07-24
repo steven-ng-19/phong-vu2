@@ -7,10 +7,10 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class SendMailService {
-  private transporter: nodemailer.Transporter;
+  private _transporter: nodemailer.Transporter;
 
   constructor(private readonly _configService: ConfigService) {
-    this.transporter = nodemailer.createTransport({
+    this._transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
       secure: false, // true cho 465, false cho các cổng khác
@@ -40,7 +40,7 @@ export class SendMailService {
       html,
     };
 
-    await this.transporter.sendMail(mailOptions).catch((error) => {
+    await this._transporter.sendMail(mailOptions).catch((error) => {
       console.error(error);
       throw new BadRequestException(error ?? 'error when send mail');
     });

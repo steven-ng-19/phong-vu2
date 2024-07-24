@@ -22,12 +22,14 @@ import {
   RegisterRequestDto,
   ResetPasswordDto,
 } from '../dtos';
-import { JwtPayload, SignOptions, sign, verify } from 'jsonwebtoken';
 import { JwtVerifyPayload, TokenPayload, TokenType } from '../types';
+import { SignOptions, sign, verify } from 'jsonwebtoken';
 import { User, UserCreateParams } from '@modules/users/types/user.type';
 
+import { AuthQueueService } from './auth-queue.service';
 import { CONFIG_VAR } from '@config/config.constant';
 import { ConfigService } from '@nestjs/config';
+import { UserKeys } from '@modules/users/entities';
 import { UserRole } from '@common/enums';
 import { UserService } from '@modules/users/services';
 
@@ -54,6 +56,7 @@ export class AuthService {
   constructor(
     private readonly _userService: UserService,
     private readonly _configService: ConfigService,
+    private readonly _authQueueService: AuthQueueService,
   ) {
     this._jwtKeys = {
       [USER_ACCESS_TOKEN]: this._configService.get(
@@ -107,7 +110,7 @@ export class AuthService {
   async validateUser(email: string, password: string): Promise<User> {
     const user = await this._userService.findOneByEmail({ email });
 
-    if (!user) {
+    if (!user || user[UserKeys.isEmailVerifiled] === false) {
       throw new BadRequestException(AUTH_ERRORS.INVALID_CREDENTIAL);
     }
 
@@ -124,21 +127,48 @@ export class AuthService {
   }
 
   async register(data: RegisterRequestDto): Promise<{ success: boolean }> {
-    const user = await this._userService.findOneByEmail({ email: data.email });
+    const { password, email } = data;
+
+    const user = await this._userService.findOneByEmail({ email });
 
     if (user) throw new ConflictException(AUTH_ERRORS.EMAIL_ALREADY_EXISTS);
 
-    const hashedPassword = await this._hashPassword(data.password);
+    const hashedPassword = await this._hashPassword(password);
 
     const params: UserCreateParams = {
       ...data,
       password: hashedPassword,
       role: UserRole.USER,
+      isEmailVerifiled: false,
     };
 
-    await this._userService.create(params);
+    const newUser = await this._userService.create(params);
 
-    // TODO : send mail verification
+    const token = await this._signPayload(
+      {
+        id: newUser.id,
+      },
+      EMAIL_TOKEN,
+    );
+
+    await Promise.all([
+      this._authQueueService.addSendMailRegisterJob({
+        to: email,
+        subject: 'Verify your email',
+        text: 'Vefity your email in Phong Vu',
+        content: token,
+        link: 'Link to phong vu',
+        title: 'For test only',
+        titleLink: 'Link to phong vu',
+      }),
+      this._userService.update(
+        { id: newUser.id },
+        {
+          emailVerificationToken: token,
+        },
+      ),
+    ]);
+
     return {
       success: true,
     };

@@ -10,6 +10,7 @@ export const RegisterRequestValidator = UserEntity.pick({
   lastName: true,
   dob: true,
   gender: true,
+  clerkId: true,
 });
 
 export class RegisterRequestDto extends createZodDto(

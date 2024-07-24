@@ -16,12 +16,6 @@ import { User } from '@modules/users/types/user.type';
 export class UserAuthController {
   constructor(private readonly _authService: AuthService) {}
 
-  @Post('register')
-  @UsePipes(ZodValidationPipe)
-  register(@Body() data: RegisterRequestDto) {
-    return this._authService.register(data);
-  }
-
   @Post('login')
   @UseGuards(LocalAuthGuard)
   login(@RequestUser() user: User) {

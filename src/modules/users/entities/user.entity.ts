@@ -10,6 +10,7 @@ export const UserKeys = UserModel.keyof().enum;
 
 export const UserEntity = UserModel.extend({
   [UserKeys.id]: UserShape.id.trim().uuid(),
+  [UserKeys.clerkId]: UserShape.clerkId.trim(),
   [UserKeys.userName]: UserShape.userName.trim(),
   [UserKeys.email]: UserShape.email.email().trim(),
   [UserKeys.phone]: UserShape.phone

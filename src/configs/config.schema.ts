@@ -52,4 +52,10 @@ export const ConfigSchema = Zod.object({
   // MAILGUN
   [CONFIG_VAR.MAIL_USER]: Zod.string().trim(),
   [CONFIG_VAR.MAIL_PASSWORD]: Zod.string().trim(),
+
+  // CLERK
+  [CONFIG_VAR.CLERK_PUBLIC_KEY]: Zod.string().trim(),
+  [CONFIG_VAR.CLERK_SECRET_KEY]: Zod.string().trim(),
+  [CONFIG_VAR.CLERK_JWT_KEY]: Zod.string().trim(),
+  [CONFIG_VAR.CLERK_API_URL]: Zod.string().trim(),
 });

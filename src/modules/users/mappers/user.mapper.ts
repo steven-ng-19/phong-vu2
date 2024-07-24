@@ -8,6 +8,7 @@ import {
 
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { UserKeys } from '../entities';
 
 @Injectable()
 export class UserMapper {

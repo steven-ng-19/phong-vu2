@@ -1,5 +1,12 @@
-import { LocalAuthGuard } from './../guards';
-import { Body, Controller, Post, UseGuards, UsePipes } from '@nestjs/common';
+import { LocalAuthGuard, UserJwtAccessAuthGuard } from './../guards';
+import {
+  Body,
+  Controller,
+  Post,
+  Req,
+  UseGuards,
+  UsePipes,
+} from '@nestjs/common';
 
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import {
@@ -11,14 +18,13 @@ import {
 import { AuthService } from '../services';
 import { RequestUser } from '@common/decorators';
 import { User } from '@modules/users/types/user.type';
-import { SendMailService } from '@shared/email/send-mail.service';
-import { readTemplate } from '@common/utils/template.util';
+import { ClerkService } from '@shared/clerk/clerk.service';
 
 @Controller('user/auth')
 export class UserAuthController {
   constructor(
     private readonly _authService: AuthService,
-    private readonly _sendMailService: SendMailService,
+    private readonly _clerkService: ClerkService,
   ) {}
 
   @Post('register')
@@ -49,26 +55,5 @@ export class UserAuthController {
   @UsePipes(ZodValidationPipe)
   resetPassword(@Body() data: ResetPasswordDto) {
     return this._authService.resetPassword(data);
-  }
-
-  @Post('send-mail')
-  async sendMail() {
-    const html = readTemplate({
-      title: 'Test send mail',
-      content: 'Send mail content',
-      titleLink: 'title link',
-      link: 'link',
-    });
-
-    await this._sendMailService.sendMail({
-      to: 'dangvanphuc7122001@gmail.com',
-      text: 'Hello ',
-      subject: ' Test send mail',
-      html: html,
-    });
-
-    return {
-      success: true,
-    };
   }
 }

@@ -4,6 +4,7 @@ import {
   UserJwtAccessStrategy,
 } from './strategies';
 
+import { AuthQueueService } from './services/auth-queue.service';
 import { AuthService } from './services';
 import { Module } from '@nestjs/common';
 import { UserAuthController } from './controllers';
@@ -14,10 +15,11 @@ import { UserModule } from '@modules/users/user.module';
   controllers: [UserAuthController],
   providers: [
     AuthService,
+    AuthQueueService,
     LocalStrategy,
     AdminJwtAccessStrategy,
     UserJwtAccessStrategy,
   ],
-  exports: [],
+  exports: [AuthQueueService],
 })
 export class AuthModule {}

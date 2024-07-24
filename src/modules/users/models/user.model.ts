@@ -4,6 +4,7 @@ import { Gender } from '@common/enums';
 
 export const UserModel = Zod.object({
   id: Zod.string(),
+  clerkId: Zod.string(),
   userName: Zod.string(),
   email: Zod.string(),
   phone: Zod.string(),
