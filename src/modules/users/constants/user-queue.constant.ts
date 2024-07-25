@@ -1,0 +1,3 @@
+export const USER_QUEUE_PROCCESSNAME = {
+  UPDATE_PROFILE: 'UPDATE_PROFILE',
+} as const;

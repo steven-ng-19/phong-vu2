@@ -22,8 +22,6 @@ export class AuthService {
   constructor(
     private readonly _userService: UserService,
     private readonly _configService: ConfigService,
-    private readonly _clerkService: ClerkService,
-    private readonly _authQueueService: AuthQueueService,
   ) {}
 
   async register(data: RegisterRequestDto): Promise<{ success: boolean }> {
@@ -45,6 +43,7 @@ export class AuthService {
       clerkId: payload.userId,
       email: payload.email,
       firstName: payload.firstName ?? 'Unknown',
+      lastName: payload.lastName ?? 'Unknown',
       gender: Gender.MALE,
       phone: payload.phone ?? 'Unknown',
       userName: payload.userName ?? 'Unknown',

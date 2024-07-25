@@ -3,12 +3,18 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { AddressModule } from '@modules/addresses/address.module';
 import { AllExceptionsFilter } from '@common/filters';
 import { AuthModule } from '@modules/auth/auth.module';
+import { CartModule } from '@modules/carts/cart.module';
+import { CategoryModule } from '@modules/categories/category.module';
 import { ClerkModule } from '@shared/clerk/clerk.module';
+import { ClerkWebhookModule } from './webhooks';
 import { ConfigModule } from '@nestjs/config';
 import { ConfigSchema } from '@config/config.schema';
 import { Environment } from '@common/enums';
 import { Module } from '@nestjs/common';
+import { OrderModule } from '@modules/orders/order.module';
 import { PrismaModule } from '@shared/prisma/prisma.module';
+import { ProductModule } from '@modules/products/product.module';
+import { PromotionModule } from '@modules/promotions/promotion.module';
 import { QueueModule } from '@shared/queue/queue.module';
 import { ResponseModule } from '@shared/response/response.module';
 import { ResponseTransformInterceptor } from '@common/interceptors';
@@ -38,8 +44,14 @@ import { UserModule } from '@modules/users/user.module';
     AuthModule,
     UserModule,
     AddressModule,
+    CategoryModule,
+    ProductModule,
+    CartModule,
+    OrderModule,
+    PromotionModule,
 
-    // Realtime
+    // Webhook
+    ClerkWebhookModule,
   ],
   controllers: [],
   providers: [

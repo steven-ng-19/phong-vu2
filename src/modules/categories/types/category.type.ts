@@ -1,12 +1,15 @@
 import * as Zod from 'zod';
 
 import {
+  CREATE_PARAMS_WITHOUT_FIELDS,
+  UPDATE_PARAMS_WITHOUT_FIELDS,
+} from '@common/constants';
+import {
   EntityNotInFilter,
   EntityWithoutFields,
   OptionalNullAbleFields,
 } from '@common/types';
 
-import { CREATE_PARAMS_WITHOUT_FIELDS } from '@common/constants';
 import { CategoryDto } from '../entities';
 
 const CategoryUniqueKeyParams = Zod.union([
@@ -18,6 +21,10 @@ const CategoryUniqueKeyParams = Zod.union([
   }),
 ]);
 
+const CategoryManyUniqueKeyParams = Zod.object({
+  id: Zod.array(Zod.string()),
+});
+
 export type Category = CategoryDto;
 
 export type CategoryFindByKeyParams = Zod.infer<
@@ -26,6 +33,23 @@ export type CategoryFindByKeyParams = Zod.infer<
   excludes?: EntityNotInFilter<Category>;
 };
 
-export type CategoryCreateParams = OptionalNullAbleFields<
-  EntityWithoutFields<Category, (typeof CREATE_PARAMS_WITHOUT_FIELDS)[number]>
+export type CategoryFindManyKeyParams = Zod.infer<
+  typeof CategoryManyUniqueKeyParams
+> & {
+  excludes?: EntityNotInFilter<Category>;
+};
+
+export type CategoryCreateParams = EntityWithoutFields<
+  Category,
+  (typeof CREATE_PARAMS_WITHOUT_FIELDS)[number]
 >;
+
+export type CategoryUpdateParams = Partial<
+  EntityWithoutFields<Category, (typeof UPDATE_PARAMS_WITHOUT_FIELDS)[number]>
+>;
+
+export type CategoryPrimaryKey = Pick<Category, 'id'>;
+
+export type CategoryFindByConditionsParams = Partial<Category> & {
+  excludes?: EntityNotInFilter<Category>;
+};

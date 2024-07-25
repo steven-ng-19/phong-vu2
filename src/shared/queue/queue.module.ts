@@ -1,12 +1,13 @@
+import { AuthConsumer, UserConsumer } from './consumer';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Global, Module } from '@nestjs/common';
 
-import { AuthConsumer } from './consumer';
 import { AuthModule } from '@modules/auth/auth.module';
 import { BullModule } from '@nestjs/bull';
 import { CONFIG_VAR } from '@config/config.constant';
 import { QUEUE_NAMES } from './constants';
 import { QueueService } from './queue.service';
+import { UserModule } from '@modules/users/user.module';
 
 @Global()
 @Module({
@@ -29,12 +30,16 @@ import { QueueService } from './queue.service';
     BullModule.registerQueue({
       name: QUEUE_NAMES.AUTH_QUEUE,
     }),
+    BullModule.registerQueue({
+      name: QUEUE_NAMES.USER_QUEUE,
+    }),
 
     // import module
     AuthModule,
+    UserModule,
   ],
   controllers: [],
-  providers: [QueueService, AuthConsumer],
+  providers: [QueueService, AuthConsumer, UserConsumer],
   exports: [QueueService],
 })
 export class QueueModule {}

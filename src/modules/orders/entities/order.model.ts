@@ -1,4 +1,5 @@
 import { OrderModel } from '../models';
+import { createZodDto } from '@anatine/zod-nestjs';
 
 export const OrderShape = OrderModel.shape;
 
@@ -17,3 +18,5 @@ export const OrderEntity = OrderModel.extend({
   [OrderKeys.createdAt]: OrderShape.createdAt.optional(),
   [OrderKeys.updatedAt]: OrderShape.updatedAt.optional(),
 });
+
+export class OrderDto extends createZodDto(OrderEntity) {}

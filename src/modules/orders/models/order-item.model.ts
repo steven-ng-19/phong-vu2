@@ -8,4 +8,6 @@ export const OrderItemModel = Zod.object({
   discount: Zod.number(),
   totalPrice: Zod.number(),
   totalPriceWithDiscount: Zod.number(),
+  createdAt: Zod.date(),
+  updatedAt: Zod.date(),
 });

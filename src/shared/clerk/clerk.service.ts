@@ -3,6 +3,7 @@ import { ClerkClient, User, createClerkClient } from '@clerk/clerk-sdk-node';
 
 import { CONFIG_VAR } from '@config/config.constant';
 import { ConfigService } from '@nestjs/config';
+import { UpdateOwnProfileDto } from '@modules/users/dtos/update-own-profile.dto';
 
 @Injectable()
 export class ClerkService {
@@ -26,7 +27,10 @@ export class ClerkService {
 
   async updateProfile(userId: string, data: any) {
     try {
-      const user = await this._clerkClient.users.updateUser(userId, data);
+      const user = await this._clerkClient.users.updateUser(userId, {
+        firstName: data.firstName,
+        lastName: data.lastName,
+      });
       return user;
     } catch (error) {
       throw new BadRequestException(error);

@@ -3,6 +3,7 @@ import {
   UserFindByConditionsParams,
   UserFindByKeyParams,
   UserPrimaryKey,
+  UserUniqueKey,
   UserUpdateParams,
 } from '../types/user.type';
 

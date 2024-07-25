@@ -5,4 +5,6 @@ export const CartModel = Zod.object({
   userId: Zod.string(),
   productId: Zod.string(),
   quantity: Zod.number(),
+  createdAt: Zod.date(),
+  updatedAt: Zod.date(),
 });

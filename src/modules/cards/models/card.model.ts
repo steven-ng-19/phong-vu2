@@ -6,4 +6,6 @@ export const CardModel = Zod.object({
   pm: Zod.string(),
   type: Zod.string(),
   isDefault: Zod.boolean(),
+  createdAt: Zod.date(),
+  updatedAt: Zod.date(),
 });

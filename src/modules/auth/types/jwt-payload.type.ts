@@ -16,6 +16,7 @@ export type JwtClerkPayload = {
   userId: string;
   email: string;
   firstName: string;
+  lastName: string;
   phone: string;
   userName: string;
 } & JwtVerifyPayload;

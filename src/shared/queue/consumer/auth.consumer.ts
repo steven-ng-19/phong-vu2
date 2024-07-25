@@ -3,11 +3,9 @@ import {
   OnQueueCompleted,
   OnQueueError,
   OnQueueFailed,
-  Process,
   Processor,
 } from '@nestjs/bull';
 
-import { AUTH_QUEUE_PROCCESS_NAME } from '@modules/auth/constants';
 import { AuthQueueService } from '@modules/auth/services';
 import { Job } from 'bull';
 import { QUEUE_NAMES } from '../constants';

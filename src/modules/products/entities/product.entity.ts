@@ -1,4 +1,5 @@
 import { ProductModel } from '../models';
+import { createZodDto } from '@anatine/zod-nestjs';
 
 export const ProductShape = ProductModel.shape;
 
@@ -19,3 +20,5 @@ export const ProductEntity = ProductModel.extend({
   [ProductKeys.createdAt]: ProductShape.createdAt.optional(),
   [ProductKeys.updatedAt]: ProductShape.updatedAt.optional(),
 });
+
+export class ProductDto extends createZodDto(ProductEntity) {}

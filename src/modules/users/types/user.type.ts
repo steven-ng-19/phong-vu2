@@ -46,6 +46,12 @@ export type UserUpdateParams = Partial<
 
 export type UserPrimaryKey = Pick<User, 'id'>;
 
+export type UserUniqueKey = Pick<User, 'clerkId'>;
+
 export type UserFindByConditionsParams = Partial<User> & {
+  excludes?: EntityNotInFilter<User>;
+};
+
+export type UserFindManyByConditionsParams = Partial<User> & {
   excludes?: EntityNotInFilter<User>;
 };

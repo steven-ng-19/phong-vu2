@@ -1,4 +1,5 @@
 import { CardModel } from '../models';
+import { createZodDto } from '@anatine/zod-nestjs';
 
 export const CardShape = CardModel.shape;
 
@@ -10,4 +11,8 @@ export const CardEntity = CardModel.extend({
   [CardKeys.pm]: CardShape.pm.trim(),
   [CardKeys.type]: CardShape.type.trim(),
   [CardKeys.isDefault]: CardShape.isDefault.optional().default(false),
+  [CardKeys.createdAt]: CardShape.createdAt.optional(),
+  [CardKeys.updatedAt]: CardShape.updatedAt.optional(),
 });
+
+export class CardDto extends createZodDto(CardEntity) {}

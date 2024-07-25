@@ -14,6 +14,7 @@ export const DEFAULT_OPTS: JobOptions = {
 export class QueueService {
   constructor(
     @InjectQueue(QUEUE_NAMES.AUTH_QUEUE) private readonly _authQueue: Queue,
+    @InjectQueue(QUEUE_NAMES.USER_QUEUE) private readonly _userQueue: Queue,
   ) {}
 
   async addJob<T>(job: JobType<T>) {
@@ -22,6 +23,11 @@ export class QueueService {
     switch (queueName) {
       case QUEUE_NAMES.AUTH_QUEUE:
         await this._authQueue.add(processName, payload, opts).catch((err) => {
+          console.error(err);
+        });
+        break;
+      case QUEUE_NAMES.USER_QUEUE:
+        await this._userQueue.add(processName, payload, opts).catch((err) => {
           console.error(err);
         });
         break;
