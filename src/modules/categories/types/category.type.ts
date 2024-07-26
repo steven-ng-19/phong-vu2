@@ -19,6 +19,9 @@ const CategoryUniqueKeyParams = Zod.union([
   Zod.object({
     slug: Zod.string(),
   }),
+  Zod.object({
+    name: Zod.string(),
+  }),
 ]);
 
 const CategoryManyUniqueKeyParams = Zod.object({

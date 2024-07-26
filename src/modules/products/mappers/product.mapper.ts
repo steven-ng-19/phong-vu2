@@ -27,6 +27,20 @@ export class ProductMapper {
             },
           ]),
         ),
+        deletedAt: null,
+      },
+      select: {
+        id: true,
+        image: true,
+        description: true,
+        category: true,
+        name: true,
+        sku: true,
+        price: true,
+        slug: true,
+        createdAt: true,
+        updatedAt: true,
+        galleries: true,
       },
     };
   }
@@ -45,13 +59,22 @@ export class ProductMapper {
             },
           ]),
         ),
+        deletedAt: null,
       },
     };
   }
 
   create(data: ProductCreateParams): Prisma.ProductCreateArgs {
+    const { galleries, ...rest } = data;
     return {
-      data,
+      data: {
+        ...rest,
+        galleries: {
+          createMany: {
+            data: data.galleries,
+          },
+        },
+      },
     };
   }
 
@@ -59,11 +82,32 @@ export class ProductMapper {
     { id }: ProductPrimaryKey,
     data: ProductUpdateParams,
   ): Prisma.ProductUpdateArgs {
+    const { galleries: gallerieDelete, ...rest } = data;
+
     return {
       where: {
         id,
       },
-      data,
+      data: {
+        ...rest,
+        galleries: gallerieDelete && {
+          deleteMany: {},
+          createMany: {
+            data: gallerieDelete,
+          },
+        },
+      },
+    };
+  }
+
+  delete({ id }: ProductPrimaryKey): Prisma.ProductUpdateArgs {
+    return {
+      where: {
+        id,
+      },
+      data: {
+        deletedAt: new Date(),
+      },
     };
   }
 }

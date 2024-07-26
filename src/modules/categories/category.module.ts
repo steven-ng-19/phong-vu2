@@ -8,6 +8,6 @@ import { Module } from '@nestjs/common';
   imports: [],
   controllers: [CategoryController, AdminCategoryController],
   providers: [CategoryService, CategoryMapper],
-  exports: [],
+  exports: [CategoryService],
 })
 export class CategoryModule {}

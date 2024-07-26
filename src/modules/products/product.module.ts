@@ -1,11 +1,13 @@
+import { AdminProductController, ProductController } from './controllers';
+
+import { CategoryModule } from '@modules/categories/category.module';
 import { Module } from '@nestjs/common';
-import { ProductController } from './controllers';
 import { ProductMapper } from './mappers';
 import { ProductService } from './services';
 
 @Module({
-  imports: [],
-  controllers: [ProductController],
+  imports: [CategoryModule],
+  controllers: [ProductController, AdminProductController],
   providers: [ProductService, ProductMapper],
   exports: [],
 })

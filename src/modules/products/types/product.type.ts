@@ -6,7 +6,7 @@ import {
 } from '@common/constants';
 import { EntityNotInFilter, EntityWithoutFields } from '@common/types';
 
-import { ProductDto } from '../entities';
+import { ProductDto } from '../dtos';
 
 const ProductUniqueKeyParams = Zod.object({
   id: Zod.string().uuid().trim(),
@@ -20,7 +20,9 @@ export type ProductFindByKeyParams = Zod.infer<
   excludes?: EntityNotInFilter<Product>;
 };
 
-export type ProductFindByConditionsParams = Partial<Product> & {
+export type ProductFindByConditionsParams = Partial<
+  EntityWithoutFields<Product, 'galleries'>
+> & {
   excludes?: EntityNotInFilter<Product>;
 };
 

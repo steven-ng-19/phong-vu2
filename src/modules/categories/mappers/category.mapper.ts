@@ -29,6 +29,7 @@ export class CategoryMapper {
             },
           ]),
         ),
+        isDeprecated: false,
       },
     };
   }
@@ -82,6 +83,7 @@ export class CategoryMapper {
             },
           ]),
         ),
+        isDeprecated: false,
       },
     };
   }
@@ -106,6 +108,18 @@ export class CategoryMapper {
             },
           ]),
         ),
+        isDeprecated: false,
+      },
+    };
+  }
+
+  delete({ id }: CategoryPrimaryKey): Prisma.CategoryUpdateArgs {
+    return {
+      where: {
+        id,
+      },
+      data: {
+        isDeprecated: true,
       },
     };
   }

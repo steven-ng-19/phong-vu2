@@ -1,7 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
+  Patch,
   Post,
   Query,
   Req,
@@ -12,7 +15,11 @@ import {
 
 import { AdminJwtAccessAuthGuard } from '@modules/auth/guards';
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { CreateCategoryDto } from '../dtos';
+import {
+  CreateCategoryDto,
+  FindCategoryByIdDto,
+  UpdateCategoryDto,
+} from '../dtos';
 import { CategoryService } from '../services';
 import { DirectFilterPipe } from '@chax-at/prisma-filter';
 import { Prisma } from '@prisma/client';
@@ -62,5 +69,25 @@ export class AdminCategoryController {
       },
       req,
     });
+  }
+
+  @Get(':id')
+  async findOne(@Param() params: FindCategoryByIdDto) {
+    return this._categoryService.findOne(params.id);
+  }
+
+  @Patch(':id')
+  @UsePipes(ZodValidationPipe)
+  update(
+    @Param() params: FindCategoryByIdDto,
+    @Body() data: UpdateCategoryDto,
+  ) {
+    return this._categoryService.update(params.id, data);
+  }
+
+  @Delete(':id')
+  @UsePipes(ZodValidationPipe)
+  delete(@Param() params: FindCategoryByIdDto) {
+    return this._categoryService.delete(params.id);
   }
 }
