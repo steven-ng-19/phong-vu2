@@ -1,19 +1,43 @@
-import { BaseQueryParams, SingleFilter, SingleFilterOrder } from '@common/dtos';
+import * as Zod from 'zod';
 
-import { Request } from 'express';
+import { createZodDto } from '@anatine/zod-nestjs';
+import express from 'express';
 
-export class ApiPaginateResponseInput<T> {
-  count!: number;
-  data!: T[];
-  query?: {
-    limit: number;
-  };
-  req?: Request;
-}
+const createApiPaginateResponseInputSchema = <T extends Zod.ZodTypeAny>(
+  itemSchema: T,
+) =>
+  Zod.object({
+    count: Zod.number(),
+    data: Zod.array(itemSchema),
+    query: Zod.object({
+      limit: Zod.number(),
+      offset: Zod.number(),
+    }).optional(),
+    req: Zod.object({
+      path: Zod.string().optional(),
+    }),
+  });
 
-export class ApiPaginateResponse<T> {
-  next?: string;
-  previous?: string;
-  count!: number;
-  results!: T[];
-}
+const ApiPaginateResponseInput = createApiPaginateResponseInputSchema(
+  Zod.any(),
+);
+
+export class ApiPaginateResponseInputType extends createZodDto(
+  ApiPaginateResponseInput,
+) {}
+
+const createApiPaginateResponseSchema = <T extends Zod.ZodTypeAny>(
+  itemSchema: T,
+) =>
+  Zod.object({
+    next: Zod.string().optional().nullable(),
+    previous: Zod.string().optional().nullable(),
+    count: Zod.number(),
+    results: Zod.array(itemSchema),
+  });
+
+const ApiPaginateResponse = createApiPaginateResponseSchema(Zod.any());
+
+export class ApiPaginateResponseOutputType extends createZodDto(
+  ApiPaginateResponse,
+) {}

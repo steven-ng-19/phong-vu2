@@ -14,13 +14,14 @@ import { AdminJwtAccessAuthGuard } from '@modules/auth/guards';
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import { CreateCategoryDto } from '../dtos';
 import { CategoryService } from '../services';
-import { Request } from 'express';
 import { DirectFilterPipe } from '@chax-at/prisma-filter';
 import { Prisma } from '@prisma/client';
 import { BaseQueryParams } from '@common/dtos';
 import { ResponseService } from '@shared/response/response.service';
+import { Request } from 'express';
+import { DEFAULT_PAGE_SIZE } from '@common/constants';
 
-@UseGuards(AdminJwtAccessAuthGuard)
+// @UseGuards(AdminJwtAccessAuthGuard)
 @Controller('admin/categories')
 export class AdminCategoryController {
   constructor(private readonly _categoryService: CategoryService) {}
@@ -44,20 +45,22 @@ export class AdminCategoryController {
     )
     query: BaseQueryParams<Prisma.CategoryWhereInput>,
   ) {
-    const { count, data } = await this._categoryService.findMany(
-      query.findOptions,
-    );
+    const { findOptions, limit = DEFAULT_PAGE_SIZE, offset = 0 } = query;
 
-    return {
+    const { count, data } = await this._categoryService.findMany({
+      ...findOptions,
+      skip: findOptions.skip ? Number(findOptions.skip) : undefined,
+      take: findOptions.take ? Number(findOptions.take) : undefined,
+    });
+
+    return ResponseService.paginateResponse({
       count,
       data,
-    };
-
-    // return ResponseService.paginateResponse({
-    //   count,
-    //   data,
-    //   query: originalQuery,
-    //   req,
-    // });
+      query: {
+        limit,
+        offset,
+      },
+      req,
+    });
   }
 }

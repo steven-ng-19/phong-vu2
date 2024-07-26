@@ -1,46 +1,49 @@
 import {
-  ApiPaginateResponse,
-  ApiPaginateResponseInput,
+  ApiPaginateResponseInputType,
+  ApiPaginateResponseOutputType,
 } from './dtos/api-paginate-respone';
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@common/constants';
 
 import { ApiErrorResponse } from './dtos';
+import { DEFAULT_PAGE_SIZE } from '@common/constants';
 import { Injectable } from '@nestjs/common';
 import { ResponseMessageCode } from './enums';
 import { stringify } from 'querystring';
 
 @Injectable()
 export class ResponseService {
-  // public static paginateResponse(input: ApiPaginateResponseInput) {}
+  public static paginateResponse(
+    input: ApiPaginateResponseInputType,
+  ): ApiPaginateResponseOutputType {
+    const { count, data, query, req } = input;
 
-  // public static paginateResponse<T>(
-  //   input: ApiPaginateResponseInput<T>,
-  // ): ApiPaginateResponse<T> {
-  //   const { count, data, query = {}, req } = input;
-  // const { page, limit, ...restQueryParams } = query;
+    const { limit, offset } = query as {
+      limit: number;
+      offset: number;
+    };
 
-  // const url = req?.path ?? '';
-  // const nextPage = page * limit < count ? page + 1 : null;
-  // const previousPage = page > 1 ? page - 1 : null;
+    const page = offset / limit + 1;
 
-  // const next = nextPage
-  //   ? `${url}?${stringify({ ...restQueryParams, page: nextPage, limit })}`
-  //   : null;
-  // const previous = previousPage
-  //   ? `${url}?${stringify({
-  //       ...restQueryParams,
-  //       page: previousPage,
-  //       limit,
-  //     })}`
-  //   : null;
+    const url = req?.path ?? '';
+    const nextPage = page * limit < count ? page + 1 : null;
+    const previousPage = page > 1 ? page - 1 : null;
 
-  // return {
-  //   next,
-  //   previous,
-  //   count,
-  //   results: data,
-  // };
-  // }
+    const next = nextPage
+      ? `${url}?${stringify({ page: nextPage, limit })}`
+      : null;
+    const previous = previousPage
+      ? `${url}?${stringify({
+          page: previousPage,
+          limit,
+        })}`
+      : null;
+
+    return {
+      next,
+      previous,
+      count,
+      results: data,
+    };
+  }
 
   public static errorResponse(exception: any): ApiErrorResponse {
     return {

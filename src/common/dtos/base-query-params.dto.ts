@@ -1,76 +1,36 @@
+import * as Zod from 'zod';
+
 import {
   FilterOperationType,
   FilterOrder,
   GeneratedFindOptions,
-  IFilter,
-  IGeneratedFilter,
-  ISingleFilter,
-  ISingleOrder,
 } from '@chax-at/prisma-filter';
-import {
-  IsArray,
-  IsDefined,
-  IsEnum,
-  IsIn,
-  IsInt,
-  IsOptional,
-  IsString,
-  Max,
-  Min,
-  ValidateNested,
-} from 'class-validator';
 
-import { Type } from 'class-transformer';
+import { DEFAULT_PAGE_SIZE } from '@common/constants';
+import { createZodDto } from '@anatine/zod-nestjs';
 
 // The fields are also validated in filter.parser.ts to make sure that only correct fields are used to filter
-export class SingleFilter<T> implements ISingleFilter<T> {
-  @IsString()
-  field!: keyof T & string;
 
-  @IsEnum(FilterOperationType)
-  type!: FilterOperationType;
+const createSingleFilterSchema = Zod.object({
+  field: Zod.string(),
+  type: Zod.nativeEnum(FilterOperationType),
+  value: Zod.any(),
+});
 
-  @IsDefined()
-  value: any;
-}
+const createSingleFilterOrderSchema = Zod.object({
+  field: Zod.string(),
+  dir: Zod.enum(['asc', 'desc']) as Zod.ZodEnum<[FilterOrder, FilterOrder]>,
+});
 
-export class SingleFilterOrder<T> implements ISingleOrder<T> {
-  @IsString()
-  field!: keyof T & string;
+const createFilterSchema = Zod.object({
+  filter: Zod.array(createSingleFilterSchema).optional(),
+  order: Zod.array(createSingleFilterOrderSchema).optional(),
+  offset: Zod.number().default(0),
+  limit: Zod.number().default(DEFAULT_PAGE_SIZE),
+});
 
-  @IsIn(['asc', 'desc'])
-  dir!: FilterOrder;
-}
+class Filter extends createZodDto(createFilterSchema) {}
 
-export class Filter<T = any> implements IFilter<T> {
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => SingleFilter)
-  @IsOptional()
-  filter?: Array<SingleFilter<T>>;
-
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => SingleFilterOrder)
-  @IsOptional()
-  order?: Array<SingleFilterOrder<T>>;
-
-  @Type(() => Number)
-  @IsInt()
-  @Min(0)
-  offset = 0;
-
-  @Type(() => Number)
-  @IsInt()
-  @Min(1)
-  @Max(500)
-  limit = 100;
-}
-
-export class BaseQueryParams<TWhereInput>
-  extends Filter
-  implements IGeneratedFilter<TWhereInput>
-{
-  // This will be set by filter pipe
+export class BaseQueryParams<TWhereInput> extends Filter {
   findOptions!: GeneratedFindOptions<TWhereInput>;
 }
