@@ -4,6 +4,7 @@ import {
   Controller,
   Get,
   Param,
+  ParseUUIDPipe,
   Query,
   Req,
   UsePipes,
@@ -15,6 +16,7 @@ import { DEFAULT_PAGE_SIZE } from '@common/constants';
 import { ResponseService } from '@shared/response/response.service';
 import { Request } from 'express';
 import { FindCategoryByIdDto } from '../dtos';
+import { Category } from '../types';
 
 @Controller('categories')
 export class CategoryController {
@@ -54,7 +56,9 @@ export class CategoryController {
 
   // TODO - Implement find one with products
   @Get(':id')
-  async findOne(@Param() params: FindCategoryByIdDto) {
+  async findOne(
+    @Param(new ParseUUIDPipe()) params: FindCategoryByIdDto,
+  ): Promise<Category> {
     return this._categoryService.findOne(params.id);
   }
 }

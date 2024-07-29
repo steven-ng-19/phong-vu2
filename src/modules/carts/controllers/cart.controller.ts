@@ -1,4 +1,8 @@
 import { Controller } from '@nestjs/common';
 
 @Controller('carts')
-export class CartController {}
+export class CartController {
+  constructor() {}
+
+  addToCart() {}
+}

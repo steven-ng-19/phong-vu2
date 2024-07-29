@@ -9,6 +9,6 @@ import { ProductService } from './services';
   imports: [CategoryModule],
   controllers: [ProductController, AdminProductController],
   providers: [ProductService, ProductMapper],
-  exports: [],
+  exports: [ProductService],
 })
 export class ProductModule {}

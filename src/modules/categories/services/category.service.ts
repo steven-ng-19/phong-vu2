@@ -4,11 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import {
-  CreateCategoryDto,
-  FindCategoryByIdDto,
-  UpdateCategoryDto,
-} from '../dtos';
+import { CreateCategoryDto, UpdateCategoryDto } from '../dtos';
 import { PaginateResponse, SuccessResponse } from '@common/types';
 
 import { CATEGORY_ERRORS } from 'src/content/errors';
@@ -112,7 +108,7 @@ export class CategoryService {
 
   /** ====================== CRUD Base ====================== */
 
-  async findOneById(id: string) {
+  async findOneById(id: string): Promise<Category | null> {
     const mapped = this._categoryMapper.findOneByKey({ id });
 
     const result = await this._prismaService.category.findFirst(mapped);
@@ -120,7 +116,7 @@ export class CategoryService {
     return result;
   }
 
-  async findOneByName(name: string) {
+  async findOneByName(name: string): Promise<Category | null> {
     const mapped = this._categoryMapper.findOneByKey({ name });
 
     const result = await this._prismaService.category.findFirst(mapped);

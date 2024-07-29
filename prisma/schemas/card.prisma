@@ -6,8 +6,9 @@ model Card {
     type      String
     isDefault Boolean @default(false) @map("is_default")
 
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @updatedAt @map("updated_at")
+    createdAt DateTime  @default(now()) @map("created_at")
+    updatedAt DateTime  @updatedAt @map("updated_at")
+    deletedAt DateTime?
 
     user User @relation(fields: [userId], references: [id])
 

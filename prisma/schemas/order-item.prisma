@@ -8,8 +8,9 @@ model OrderItem {
     totalPrice             Float  @map("total_price")
     totalPriceWithDiscount Float? @map("total_price_with_discount")
 
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @updatedAt @map("updated_at")
+    createdAt DateTime  @default(now()) @map("created_at")
+    updatedAt DateTime  @updatedAt @map("updated_at")
+    deletedAt DateTime?
 
     order   Order   @relation(fields: [orderId], references: [id])
     product Product @relation(fields: [productId], references: [id])

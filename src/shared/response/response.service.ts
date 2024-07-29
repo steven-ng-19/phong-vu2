@@ -4,7 +4,6 @@ import {
 } from './dtos/api-paginate-respone';
 
 import { ApiErrorResponse } from './dtos';
-import { DEFAULT_PAGE_SIZE } from '@common/constants';
 import { Injectable } from '@nestjs/common';
 import { ResponseMessageCode } from './enums';
 import { stringify } from 'querystring';

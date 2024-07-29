@@ -1,9 +1,18 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 
 import { UserService } from '../services';
 import { RequestUser } from '@common/decorators';
 import { User } from '../types/user.type';
 import { UpdateOwnProfileDto } from '../dtos';
+import { UserJwtAccessAuthGuard } from '@modules/auth/guards';
 
 @Controller('users')
 export class UserController {
@@ -11,6 +20,7 @@ export class UserController {
 
   // get me
   @Get('me/profile')
+  @UseGuards(UserJwtAccessAuthGuard)
   getOwnProfile(@RequestUser() user: User) {
     const {
       id,
@@ -41,9 +51,13 @@ export class UserController {
     };
   }
 
+  // TODO not using with api that using with webhook clerk to update profile
   // update profile
   @Post('me/profile/:id')
-  updateOwnProfile(@Body() data: UpdateOwnProfileDto, @Param('id') id: string) {
+  updateOwnProfile(
+    @Body() data: UpdateOwnProfileDto,
+    @Param('id', new ParseUUIDPipe()) id: string,
+  ) {
     return this._userService.updateOwnProfile(id, data);
   }
 }

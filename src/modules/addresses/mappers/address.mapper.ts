@@ -37,17 +37,6 @@ export class AddressMapper {
           ]),
         ),
       },
-      include: {
-        user: {
-          select: {
-            id: true,
-            email: true,
-            firstName: true,
-            lastName: true,
-            dob: true,
-          },
-        },
-      },
     };
   }
 

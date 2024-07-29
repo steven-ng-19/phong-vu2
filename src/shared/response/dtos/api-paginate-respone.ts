@@ -1,7 +1,6 @@
 import * as Zod from 'zod';
 
 import { createZodDto } from '@anatine/zod-nestjs';
-import express from 'express';
 
 const createApiPaginateResponseInputSchema = <T extends Zod.ZodTypeAny>(
   itemSchema: T,

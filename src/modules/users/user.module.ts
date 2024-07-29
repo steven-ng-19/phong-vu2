@@ -1,12 +1,12 @@
+import { AdminUserController, UserController } from './controllers';
 import { UserQueueService, UserService } from './services';
 
-import { AdminUserController } from './controllers';
 import { Module } from '@nestjs/common';
 import { UserMapper } from './mappers';
 
 @Module({
   imports: [],
-  controllers: [AdminUserController],
+  controllers: [AdminUserController, UserController],
   providers: [UserService, UserMapper, UserQueueService],
   exports: [UserService, UserQueueService],
 })

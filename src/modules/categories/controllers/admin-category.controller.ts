@@ -4,11 +4,11 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
   Req,
-  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -27,6 +27,8 @@ import { BaseQueryParams } from '@common/dtos';
 import { ResponseService } from '@shared/response/response.service';
 import { Request } from 'express';
 import { DEFAULT_PAGE_SIZE } from '@common/constants';
+import { SuccessResponse } from '@common/types';
+import { Category } from '../types';
 
 // @UseGuards(AdminJwtAccessAuthGuard)
 @Controller('admin/categories')
@@ -35,7 +37,7 @@ export class AdminCategoryController {
 
   @Post('')
   @UsePipes(ZodValidationPipe)
-  create(@Body() data: CreateCategoryDto) {
+  create(@Body() data: CreateCategoryDto): Promise<SuccessResponse<undefined>> {
     return this._categoryService.create(data);
   }
 
@@ -72,22 +74,26 @@ export class AdminCategoryController {
   }
 
   @Get(':id')
-  async findOne(@Param() params: FindCategoryByIdDto) {
+  async findOne(
+    @Param(new ParseUUIDPipe()) params: FindCategoryByIdDto,
+  ): Promise<Category> {
     return this._categoryService.findOne(params.id);
   }
 
   @Patch(':id')
   @UsePipes(ZodValidationPipe)
   update(
-    @Param() params: FindCategoryByIdDto,
+    @Param(new ParseUUIDPipe()) params: FindCategoryByIdDto,
     @Body() data: UpdateCategoryDto,
-  ) {
+  ): Promise<SuccessResponse<undefined>> {
     return this._categoryService.update(params.id, data);
   }
 
   @Delete(':id')
   @UsePipes(ZodValidationPipe)
-  delete(@Param() params: FindCategoryByIdDto) {
+  delete(
+    @Param(new ParseUUIDPipe()) params: FindCategoryByIdDto,
+  ): Promise<unknown> {
     return this._categoryService.delete(params.id);
   }
 }

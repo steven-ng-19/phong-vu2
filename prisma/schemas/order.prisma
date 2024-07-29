@@ -10,8 +10,9 @@ model Order {
     notes          String  @db.VarChar(255)
     addressData    Json
 
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @updatedAt @map("updated_at")
+    createdAt DateTime  @default(now()) @map("created_at")
+    updatedAt DateTime  @updatedAt @map("updated_at")
+    deletedAt DateTime?
 
     user       User        @relation(fields: [userId], references: [id])
     orderItems OrderItem[]

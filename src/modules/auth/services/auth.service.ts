@@ -7,11 +7,10 @@ import {
 import { Gender, UserRole } from '@common/enums';
 import { LoginDto, RegisterRequestDto } from '../dtos';
 
-import { AuthQueueService } from './auth-queue.service';
 import { CONFIG_VAR } from '@config/config.constant';
-import { ClerkService } from '@shared/clerk/clerk.service';
 import { ConfigService } from '@nestjs/config';
 import { JwtClerkPayload } from '../types/jwt-payload.type';
+import { SuccessResponse } from '@common/types';
 import { UserCreateParams } from '@modules/users/types/user.type';
 import { UserKeys } from '@modules/users/entities';
 import { UserService } from '@modules/users/services';
@@ -24,7 +23,9 @@ export class AuthService {
     private readonly _configService: ConfigService,
   ) {}
 
-  async register(data: RegisterRequestDto): Promise<{ success: boolean }> {
+  async register(
+    data: RegisterRequestDto,
+  ): Promise<SuccessResponse<undefined>> {
     const payload = await this._verifyToken(
       data.token,
       this._configService.getOrThrow(CONFIG_VAR.CLERK_JWT_KEY),
@@ -57,7 +58,7 @@ export class AuthService {
     };
   }
 
-  async userLogin(data: LoginDto) {
+  async userLogin(data: LoginDto): Promise<SuccessResponse<undefined>> {
     const payload = await this._verifyToken(
       data.token,
       this._configService.getOrThrow(CONFIG_VAR.CLERK_JWT_KEY),
@@ -76,7 +77,7 @@ export class AuthService {
     };
   }
 
-  async adminLogin(data: LoginDto) {
+  async adminLogin(data: LoginDto): Promise<SuccessResponse<undefined>> {
     const payload = await this._verifyToken(
       data.token,
       this._configService.getOrThrow(CONFIG_VAR.CLERK_JWT_KEY),
@@ -93,15 +94,6 @@ export class AuthService {
     return {
       success: true,
     };
-  }
-
-  async getMe(clerkId: string) {
-    const user = await this._userService.findOneByClerkId({ clerkId });
-
-    if (!user) {
-    }
-
-    return user;
   }
 
   private async _verifyToken(

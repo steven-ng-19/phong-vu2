@@ -3,6 +3,7 @@ import { Body, Controller, Post, UsePipes } from '@nestjs/common';
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import { LoginDto } from '../dtos';
 import { AuthService } from '../services';
+import { SuccessResponse } from '@common/types';
 
 @Controller('admin/auth')
 export class UserAuthController {
@@ -10,7 +11,7 @@ export class UserAuthController {
 
   @Post('login')
   @UsePipes(ZodValidationPipe)
-  login(@Body() data: LoginDto) {
+  login(@Body() data: LoginDto): Promise<SuccessResponse<undefined>> {
     return this._authService.adminLogin(data);
   }
 }

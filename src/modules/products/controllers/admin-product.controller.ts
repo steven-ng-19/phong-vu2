@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -69,18 +70,21 @@ export class AdminProductController {
   }
 
   @Get(':id')
-  findOne(@Param() params: FindProductByIdDto) {
+  findOne(@Param(new ParseUUIDPipe()) params: FindProductByIdDto) {
     return this._productService.findOne(params.id);
   }
 
   @Patch(':id')
   @UsePipes(new ZodValidationPipe())
-  update(@Param() params: FindProductByIdDto, @Body() data: UpdateProductDto) {
+  update(
+    @Param(new ParseUUIDPipe()) params: FindProductByIdDto,
+    @Body() data: UpdateProductDto,
+  ) {
     return this._productService.update(params.id, data);
   }
 
   @Delete(':id')
-  delete(@Param() params: FindProductByIdDto) {
+  delete(@Param(new ParseUUIDPipe()) params: FindProductByIdDto) {
     return this._productService.delete(params.id);
   }
 }

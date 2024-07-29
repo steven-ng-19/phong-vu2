@@ -34,5 +34,3 @@ export const UserEntity = UserModel.extend({
   [UserKeys.createdAt]: UserShape.createdAt.optional(),
   [UserKeys.updatedAt]: UserShape.updatedAt.optional(),
 });
-
-export class UserDto extends createZodDto(UserEntity) {}

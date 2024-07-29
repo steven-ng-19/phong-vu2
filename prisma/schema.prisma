@@ -25,8 +25,9 @@ model Address {
   longitude Int?
   isDefault Boolean @default(false) @map("is_default")
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime?
 
   user User @relation(fields: [userId], references: [id])
 
@@ -34,15 +35,17 @@ model Address {
 }
 
 model Benefit {
-  id         String @id @default(uuid()) @db.VarChar(36)
-  discountId String @unique @map("discount_id") @db.VarChar(36)
+  id          String @id @default(uuid()) @db.VarChar(36)
+  discountId  String @unique @map("discount_id") @db.VarChar(36)
+  promotionId String @unique @map("promotion_id") @db.VarChar(36)
 
-  discount Discount @relation(fields: [discountId], references: [id])
-  gifts    Gift[]
+  discount  Discount  @relation(fields: [discountId], references: [id])
+  promotion Promotion @relation(fields: [promotionId], references: [id])
+  gifts     Gift[]
 
-  createdAt DateTime   @default(now()) @map("created_at")
-  updatedAt DateTime   @updatedAt @map("updated_at")
-  Promotion Promotion?
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime?
 
   @@map("benefits")
 }
@@ -55,8 +58,9 @@ model Card {
   type      String
   isDefault Boolean @default(false) @map("is_default")
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime?
 
   user User @relation(fields: [userId], references: [id])
 
@@ -70,8 +74,9 @@ model CartItem {
 
   quantity Int @default(1)
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime?
 
   user    User    @relation(fields: [userId], references: [id])
   product Product @relation(fields: [productId], references: [id])
@@ -87,8 +92,9 @@ model Category {
   image        String  @db.VarChar(100)
   isDeprecated Boolean @default(false)
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime?
 
   products Product[]
 
@@ -96,16 +102,18 @@ model Category {
 }
 
 model Condition {
-  id String @id @default(uuid()) @db.VarChar(36)
+  id          String @id @default(uuid()) @db.VarChar(36)
+  promotionId String @unique() @map("promotion_id") @db.VarChar(36)
 
   orderValueMin Float @map("order_value_min")
   orderValueMax Float @map("order_value_max")
   minQuantity   Int   @default(1) @map("min_quantity")
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime?
 
-  promotion Promotion?
+  promotion Promotion @relation(fields: [promotionId], references: [id])
 
   @@map("conditions")
 }
@@ -118,8 +126,9 @@ model Discount {
   flat              Int?
   maxAmountPerOrder Float @map("max_amount_per_order")
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime?
 
   benefit Benefit?
 
@@ -135,8 +144,9 @@ model Gallery {
   type  String?
   order Int     @default(0)
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime?
 
   product Product @relation(fields: [productId], references: [id])
 
@@ -153,8 +163,9 @@ model Gift {
   quantity            Int
   maxQuantityPerOrder Int    @default(1) @map("max_quantity_per_order")
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime?
 
   benefit Benefit @relation(fields: [benefitId], references: [id])
 
@@ -171,8 +182,9 @@ model OrderItem {
   totalPrice             Float  @map("total_price")
   totalPriceWithDiscount Float? @map("total_price_with_discount")
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime?
 
   order   Order   @relation(fields: [orderId], references: [id])
   product Product @relation(fields: [productId], references: [id])
@@ -193,8 +205,9 @@ model Order {
   notes          String  @db.VarChar(255)
   addressData    Json
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime?
 
   user       User        @relation(fields: [userId], references: [id])
   orderItems OrderItem[]
@@ -228,9 +241,7 @@ model Product {
 }
 
 model Promotion {
-  id          String @id @default(uuid()) @db.VarChar(36)
-  conditionId String @unique() @map("condition_id") @db.VarChar(36)
-  benefitId   String @unique() @map("benefit_id") @db.VarChar(36)
+  id String @id @default(uuid()) @db.VarChar(36)
 
   name        String   @db.VarChar(255)
   description String   @db.Text
@@ -239,11 +250,12 @@ model Promotion {
   isDefault   Boolean  @default(false)
   applyOn     String?  @map("apply_on")
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime?
 
-  condition Condition @relation(fields: [conditionId], references: [id])
-  benefit   Benefit   @relation(fields: [benefitId], references: [id])
+  condition Condition?
+  benefit   Benefit?
 
   @@map("promotions")
 }
@@ -264,8 +276,9 @@ model User {
   gender     String    @db.VarChar(10)
   customerId String?   @map("customer_id") @db.VarChar(100)
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime?
 
   addresses Address[]
   cartItems CartItem[]

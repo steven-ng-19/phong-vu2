@@ -6,7 +6,7 @@ import {
 } from '@common/constants';
 import { EntityNotInFilter, EntityWithoutFields } from '@common/types';
 
-import { AddressDto } from '../entities/address.entity';
+import { AddressDto } from '../dtos';
 
 export type Address = AddressDto;
 

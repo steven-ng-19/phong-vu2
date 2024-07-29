@@ -5,8 +5,9 @@ model CartItem {
 
     quantity Int @default(1)
 
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @updatedAt @map("updated_at")
+    createdAt DateTime  @default(now()) @map("created_at")
+    updatedAt DateTime  @updatedAt @map("updated_at")
+    deletedAt DateTime?
 
     user    User    @relation(fields: [userId], references: [id])
     product Product @relation(fields: [productId], references: [id])

@@ -7,4 +7,8 @@ export const PRODUCT_ERRORS = {
     code: 'NOT_FOUND',
     message: 'Product not found',
   },
+  SKU_INVALID: {
+    code: 'SKU_INVALID',
+    message: 'Sku is invalid',
+  },
 };

@@ -10,7 +10,7 @@ import {
   OptionalNullAbleFields,
 } from '@common/types';
 
-import { UserDto } from '../entities';
+import { UserDto } from '../dtos';
 
 // export const UserParamsSchema = UserEntity;
 

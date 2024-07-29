@@ -5,6 +5,7 @@ import { LoginDto, RegisterRequestDto } from '../dtos';
 import { AuthService } from '../services';
 
 import { ClerkService } from '@shared/clerk/clerk.service';
+import { SuccessResponse } from '@common/types';
 
 @Controller('user/auth')
 export class UserAuthController {
@@ -15,13 +16,15 @@ export class UserAuthController {
 
   @Post('register')
   @UsePipes(ZodValidationPipe)
-  register(@Body() data: RegisterRequestDto) {
+  register(
+    @Body() data: RegisterRequestDto,
+  ): Promise<SuccessResponse<undefined>> {
     return this._authService.register(data);
   }
 
   @Post('login')
   @UsePipes(ZodValidationPipe)
-  login(@Body() data: LoginDto) {
+  login(@Body() data: LoginDto): Promise<SuccessResponse<undefined>> {
     return this._authService.userLogin(data);
   }
 }

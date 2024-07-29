@@ -6,7 +6,6 @@ export const CreateAddressRequestValidator = AddressEntity.pick({
   country: true,
   district: true,
   fullName: true,
-  isDefault: true,
   phone: true,
   ward: true,
   address: true,

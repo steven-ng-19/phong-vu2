@@ -24,5 +24,3 @@ export const AddressEntity = AddressModel.extend({
   [AddressKeys.createdAt]: AddressShape.createdAt.optional(),
   [AddressKeys.updatedAt]: AddressShape.updatedAt.optional(),
 });
-
-export class AddressDto extends createZodDto(AddressEntity) {}

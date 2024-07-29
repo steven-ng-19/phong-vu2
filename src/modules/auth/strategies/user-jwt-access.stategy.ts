@@ -6,6 +6,7 @@ import { CONFIG_VAR } from '@config/config.constant';
 import { ConfigService } from '@nestjs/config';
 import { JwtClerkPayload } from '../types';
 import { PassportStrategy } from '@nestjs/passport';
+import { User } from '@modules/users/types';
 import { UserRole } from '@common/enums';
 import { UserService } from '@modules/users/services';
 
@@ -28,7 +29,9 @@ export class UserJwtAccessStrategy extends PassportStrategy(
   }
 
   // TODO Fix type
-  async validate(payload: JwtClerkPayload) {
+  async validate(payload: JwtClerkPayload): Promise<User> {
+    console.log(payload);
+
     const user = await this._userService.findOne({
       clerkId: payload.userId,
       role: UserRole.USER,
