@@ -41,6 +41,8 @@ export class ProductMapper {
         createdAt: true,
         updatedAt: true,
         galleries: true,
+        discount: true,
+        quantity: true,
       },
     };
   }

@@ -5,3 +5,4 @@ export * from './category.error';
 export * from './product.error';
 export * from './address.error';
 export * from './promotion.error';
+export * from './cart.error';

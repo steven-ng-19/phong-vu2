@@ -70,7 +70,7 @@ export class AdminProductController {
   }
 
   @Get(':id')
-  findOne(@Param(new ParseUUIDPipe()) params: FindProductByIdDto) {
+  findOne(@Param() params: FindProductByIdDto) {
     return this._productService.findOne(params.id);
   }
 

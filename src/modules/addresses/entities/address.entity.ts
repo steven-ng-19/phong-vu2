@@ -23,4 +23,5 @@ export const AddressEntity = AddressModel.extend({
   [AddressKeys.isDefault]: AddressShape.isDefault.optional().default(false),
   [AddressKeys.createdAt]: AddressShape.createdAt.optional(),
   [AddressKeys.updatedAt]: AddressShape.updatedAt.optional(),
+  [AddressKeys.deletedAt]: AddressShape.deletedAt.optional(),
 });

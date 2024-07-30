@@ -11,4 +11,12 @@ export const PRODUCT_ERRORS = {
     code: 'SKU_INVALID',
     message: 'Sku is invalid',
   },
+  QUANTITY: {
+    code: 'QUANTITY',
+    message: 'The quantity of products in stock is insufficient.',
+  },
+  PRICE: {
+    code: 'PRICE',
+    message: 'The price of products is invalid.',
+  },
 };

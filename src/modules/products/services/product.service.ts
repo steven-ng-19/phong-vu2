@@ -153,7 +153,9 @@ export class ProductService {
 
   /** ====================== General ====================== */
 
-  async findOneWithConditions(params: ProductFindByConditionsParams) {
+  async findOneWithConditions(
+    params: ProductFindByConditionsParams,
+  ): Promise<Product | null> {
     const mapped = this._productMapper.findOne(params);
 
     const result = await this._prismaService.product.findFirst(mapped);
@@ -161,10 +163,21 @@ export class ProductService {
     return result;
   }
 
-  async findOneById(id: string) {
+  async findOneById(id: string): Promise<Product | null> {
     const mapped = this._productMapper.findOneByKey({ id });
 
     const result = await this._prismaService.product.findFirst(mapped);
+
+    return result;
+  }
+
+  async decreaseQuantity(
+    productId: string,
+    quantity: number,
+  ): Promise<Product> {
+    const mapped = this._productMapper.update({ id: productId }, { quantity });
+
+    const result = await this._prismaService.product.update(mapped);
 
     return result;
   }

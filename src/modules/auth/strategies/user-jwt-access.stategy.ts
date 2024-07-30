@@ -30,8 +30,6 @@ export class UserJwtAccessStrategy extends PassportStrategy(
 
   // TODO Fix type
   async validate(payload: JwtClerkPayload): Promise<User> {
-    console.log(payload);
-
     const user = await this._userService.findOne({
       clerkId: payload.userId,
       role: UserRole.USER,

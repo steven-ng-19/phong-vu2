@@ -15,4 +15,5 @@ export const AddressModel = Zod.object({
   isDefault: Zod.boolean(),
   createdAt: Zod.date(),
   updatedAt: Zod.date(),
+  deletedAt: Zod.date(),
 });

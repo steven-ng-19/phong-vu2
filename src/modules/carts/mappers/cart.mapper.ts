@@ -1,5 +1,7 @@
 import {
   CartCreateParams,
+  CartDeleteByKeyParams,
+  CartDeleteManyByKeyParams,
   CartFindByConditionParams,
   CartFindByKeyParams,
   CartPrimaryKey,
@@ -27,6 +29,51 @@ export class CartMapper {
             },
           ]),
         ),
+      },
+      include: {
+        product: true,
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+            gender: true,
+          },
+        },
+      },
+    };
+  }
+
+  findManyByKey(params: CartFindByKeyParams): Prisma.CartItemFindManyArgs {
+    const { excludes = {}, ...rest } = params;
+
+    return {
+      where: {
+        ...rest,
+        ...Object.fromEntries(
+          Object.entries(excludes).map(([key, value]) => [
+            key,
+            {
+              notIn: value,
+            },
+          ]),
+        ),
+      },
+      select: {
+        id: true,
+        quantity: true,
+        product: {
+          select: {
+            name: true,
+            price: true,
+          },
+        },
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
       },
     };
   }
@@ -67,6 +114,24 @@ export class CartMapper {
       },
       data: {
         ...data,
+      },
+    };
+  }
+
+  deleteByKey(params: CartPrimaryKey): Prisma.CartItemDeleteArgs {
+    return {
+      where: {
+        ...params,
+      },
+    };
+  }
+
+  deleteManyByKey(
+    params: CartDeleteManyByKeyParams,
+  ): Prisma.CartItemDeleteManyArgs {
+    return {
+      where: {
+        ...params,
       },
     };
   }

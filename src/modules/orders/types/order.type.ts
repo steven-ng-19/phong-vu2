@@ -6,7 +6,7 @@ import {
 } from '@common/constants';
 import { EntityNotInFilter, EntityWithoutFields } from '@common/types';
 
-import { OrderDto } from '../entities';
+import { OrderDto } from '../dtos';
 
 export type Order = OrderDto;
 

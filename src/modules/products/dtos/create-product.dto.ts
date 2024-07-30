@@ -24,6 +24,7 @@ export const CreateProductRequestValidator = ProductEntity.extend({
   galleries: true,
   categoryId: true,
   quantity: true,
+  discount: true,
 });
 
 export class CreateProductDto extends createZodDto(

@@ -85,11 +85,11 @@ export class PromotionService {
   ): Promise<PaginateResponse<Promotion>> {
     const [count, promotion] = await Promise.all([
       this._prismaService.promotion.count({
-        where: { ...query.where },
+        where: { ...query.where, deletedAt: null },
       }),
       this._prismaService.promotion.findMany({
         ...query,
-        where: { ...query.where },
+        where: { ...query.where, deletedAt: null },
         include: {
           benefit: { include: { discount: true, gifts: true } },
           condition: true,

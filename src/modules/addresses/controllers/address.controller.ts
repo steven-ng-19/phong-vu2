@@ -27,8 +27,6 @@ import { DEFAULT_PAGE_SIZE } from '@common/constants';
 import { ResponseService } from '@shared/response/response.service';
 import { UpdateAddressDto } from '../dtos/update-address.dto';
 import { SuccessResponse } from '@common/types';
-import { ApiPaginateResponseOutputDto } from '@shared/response/dtos';
-import { AddressCreateParams } from '../types/address.type';
 
 @UseGuards(UserJwtAccessAuthGuard)
 @Controller('addresses')

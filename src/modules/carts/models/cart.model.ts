@@ -7,4 +7,5 @@ export const CartModel = Zod.object({
   quantity: Zod.number(),
   createdAt: Zod.date(),
   updatedAt: Zod.date(),
+  deletedAt: Zod.date(),
 });

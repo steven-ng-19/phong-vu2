@@ -18,11 +18,21 @@ const CartUniqueKeyParams = Zod.union([
     userId: Zod.string().trim().uuid(),
     productId: Zod.string().trim().uuid(),
   }),
+  Zod.object({
+    userId: Zod.string().trim().uuid(),
+  }),
+  Zod.object({
+    id: Zod.string().trim().uuid(),
+    productId: Zod.string().trim().uuid(),
+  }),
 ]);
 
 export type CartFindByKeyParams = Zod.infer<typeof CartUniqueKeyParams> & {
   excludes?: EntityNotInFilter<Cart>;
 };
+
+export type CartDeleteManyByKeyParams = Zod.infer<typeof CartUniqueKeyParams>;
+export type CartDeleteByKeyParams = Zod.infer<typeof CartUniqueKeyParams>;
 
 export type CartFindByConditionParams = Partial<Cart> & {
   excludes?: EntityNotInFilter<Cart>;

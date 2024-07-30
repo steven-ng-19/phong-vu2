@@ -2,7 +2,7 @@ model OrderItem {
     orderId   String @map("order_id") @db.VarChar(36)
     productId String @map("product_id") @db.VarChar(36)
 
-    productData            Json   @map("product_data")
+    productData            Json?  @map("product_data")
     quantity               Int
     discount               Float?
     totalPrice             Float  @map("total_price")
