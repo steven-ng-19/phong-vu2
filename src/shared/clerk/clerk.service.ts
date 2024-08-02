@@ -25,7 +25,13 @@ export class ClerkService {
     }
   }
 
-  async updateProfile(userId: string, data: any) {
+  async updateProfile(
+    userId: string,
+    data: {
+      firstName: string;
+      lastName: string;
+    },
+  ) {
     try {
       const user = await this._clerkClient.users.updateUser(userId, {
         firstName: data.firstName,
