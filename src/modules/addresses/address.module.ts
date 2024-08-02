@@ -7,6 +7,6 @@ import { Module } from '@nestjs/common';
   imports: [],
   controllers: [AddressController],
   providers: [AddressService, AddressMapper],
-  exports: [],
+  exports: [AddressService],
 })
 export class AddressModule {}

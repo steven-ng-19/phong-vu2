@@ -50,4 +50,9 @@ export const ConfigSchema = Zod.object({
   [CONFIG_VAR.CLERK_SECRET_KEY]: Zod.string().trim(),
   [CONFIG_VAR.CLERK_JWT_KEY]: Zod.string().trim(),
   [CONFIG_VAR.CLERK_API_URL]: Zod.string().trim(),
+
+  // STRIPE
+  [CONFIG_VAR.STRIPE_SECRET_KEY]: Zod.string().trim(),
+  [CONFIG_VAR.STRIPE_PUBLISH_KEY]: Zod.string().trim(),
+  [CONFIG_VAR.STRIPE_WEB_HOOK_SECRET]: Zod.string().trim(),
 });

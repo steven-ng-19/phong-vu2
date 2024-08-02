@@ -2,7 +2,6 @@ import * as Zod from 'zod';
 
 import { OrderEntity, OrderItemEntity } from '../entities';
 
-import { AddressEntity } from '@modules/addresses/entities/address.entity';
 import { createZodDto } from '@anatine/zod-nestjs';
 
 export const CreateOrderRequestVaidator = OrderEntity.extend({
@@ -10,18 +9,17 @@ export const CreateOrderRequestVaidator = OrderEntity.extend({
     OrderItemEntity.pick({
       productId: true,
       quantity: true,
-      discount: true,
+      productData: true,
       totalPrice: true,
       totalPriceWithDiscount: true,
-      productData: true,
     }),
   ).min(1),
-  addressData: AddressEntity.partial(),
+  addressId: Zod.string().trim().uuid(),
 }).pick({
   paymentMethod: true,
   paymentId: true,
   notes: true,
-  addressData: true,
+  addressId: true,
   orderItems: true,
 });
 

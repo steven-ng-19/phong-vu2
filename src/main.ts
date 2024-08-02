@@ -1,4 +1,5 @@
 import * as compression from 'compression';
+import * as express from 'express';
 
 import { CONFIG_VAR, DEFAULT_PORT } from '@config/index';
 import { INestApplication, Logger, VersioningType } from '@nestjs/common';
@@ -15,6 +16,11 @@ async function getApp() {
   app.enableCors();
   app.use(compression());
   app.use(helmet());
+  app.use(
+    express.json({
+      verify: (req, res, buffer) => (req['rawBody'] = buffer),
+    }),
+  );
 
   // app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 

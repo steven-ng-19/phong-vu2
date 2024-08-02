@@ -10,11 +10,22 @@ import { OrderDto } from '../dtos';
 
 export type Order = OrderDto;
 
-const OrderUniqueKeyParams = Zod.object({
-  id: Zod.string().trim().uuid(),
-});
+const OrderUniqueKeyParams = Zod.union([
+  Zod.object({
+    id: Zod.string().trim().uuid(),
+  }),
+  Zod.object({
+    userId: Zod.string().trim(),
+  }),
+]);
 
 export type OrderFindByKeyParams = Zod.infer<typeof OrderUniqueKeyParams> & {
+  excludes?: EntityNotInFilter<Order>;
+};
+
+export type OrderFindManyByKeyParams = Zod.infer<
+  typeof OrderUniqueKeyParams
+> & {
   excludes?: EntityNotInFilter<Order>;
 };
 
@@ -27,6 +38,6 @@ export type OrderCreateParams = EntityWithoutFields<
   (typeof CREATE_PARAMS_WITHOUT_FIELDS)[number]
 >;
 
-export type OrderUpdateParams = Partial<
-  EntityWithoutFields<Order, (typeof UPDATE_PARAMS_WITHOUT_FIELDS)[number]>
->;
+export type OrderUpdateParams = Pick<Order, 'status'>;
+
+export type OrderPrimaryKey = Pick<Order, 'id'>;

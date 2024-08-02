@@ -175,7 +175,26 @@ export class ProductService {
     productId: string,
     quantity: number,
   ): Promise<Product> {
-    const mapped = this._productMapper.update({ id: productId }, { quantity });
+    const mapped = this._productMapper.update(
+      { id: productId },
+      { quantity },
+      'decrement',
+    );
+
+    const result = await this._prismaService.product.update(mapped);
+
+    return result;
+  }
+
+  async increaseQuantity(
+    productId: string,
+    quantity: number,
+  ): Promise<Product> {
+    const mapped = this._productMapper.update(
+      { id: productId },
+      { quantity },
+      'increment',
+    );
 
     const result = await this._prismaService.product.update(mapped);
 

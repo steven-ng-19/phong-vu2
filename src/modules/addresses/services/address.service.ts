@@ -10,7 +10,7 @@ import { PaginateResponse, SuccessResponse } from '@common/types';
 import { ADDRESS_ERRORS } from 'src/content/errors';
 import { AddressMapper } from '../mappers';
 import { PrismaService } from '@shared/prisma/prisma.service';
-import { UpdateAddressDto } from '../dtos/update-address.dto';
+import { UpdateAddressDto } from '../dtos';
 
 @Injectable()
 export class AddressService {

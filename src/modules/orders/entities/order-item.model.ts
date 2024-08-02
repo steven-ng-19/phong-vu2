@@ -10,9 +10,10 @@ export const OrderItemEntity = OrderItemModel.extend({
   [OrderItemKeys.productId]: OrderItemShape.productId.trim().uuid(),
   [OrderItemKeys.productData]: OrderItemShape.productData,
   [OrderItemKeys.quantity]: OrderItemShape.quantity.min(1),
-  [OrderItemKeys.discount]: OrderItemShape.discount,
-  [OrderItemKeys.totalPrice]: OrderItemShape.totalPrice,
-  [OrderItemKeys.totalPriceWithDiscount]: OrderItemShape.totalPriceWithDiscount,
+  [OrderItemKeys.discount]: OrderItemShape.discount.optional(),
+  [OrderItemKeys.totalPrice]: OrderItemShape.totalPrice.optional(),
+  [OrderItemKeys.totalPriceWithDiscount]:
+    OrderItemShape.totalPriceWithDiscount.optional(),
   [OrderItemKeys.createdAt]: OrderItemShape.createdAt.optional(),
   [OrderItemKeys.updatedAt]: OrderItemShape.updatedAt.optional(),
 });

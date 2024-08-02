@@ -83,6 +83,7 @@ export class ProductMapper {
   update(
     { id }: ProductPrimaryKey,
     data: ProductUpdateParams,
+    type: string = 'decrement',
   ): Prisma.ProductUpdateArgs {
     const { galleries: gallerieDelete, ...rest } = data;
 
@@ -98,6 +99,14 @@ export class ProductMapper {
             data: gallerieDelete,
           },
         },
+        quantity:
+          type === 'decrement'
+            ? {
+                decrement: data.quantity,
+              }
+            : {
+                increment: data.quantity,
+              },
       },
     };
   }

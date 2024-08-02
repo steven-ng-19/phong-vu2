@@ -1,5 +1,12 @@
+import {
+  OrderCreateParams,
+  OrderFindByKeyParams,
+  OrderFindManyByKeyParams,
+  OrderPrimaryKey,
+  OrderUpdateParams,
+} from '../types';
+
 import { Injectable } from '@nestjs/common';
-import { OrderCreateParams } from '../types/order.type';
 import { Prisma } from '@prisma/client';
 
 @Injectable()
@@ -22,12 +29,72 @@ export class OrderMapper {
               productId: item.productId,
               quantity: item.quantity,
               discount: item.discount,
-              totalPrice: item.totalPrice,
-              totalPriceWithDiscount: item.totalPriceWithDiscount,
+              totalPrice: item.totalPrice as number,
+              totalPriceWithDiscount: item.totalPriceWithDiscount as number,
               productData: item.productData,
             };
           }),
         },
+      },
+    };
+  }
+
+  update(
+    { id }: OrderPrimaryKey,
+    data: OrderUpdateParams,
+  ): Prisma.OrderUpdateArgs {
+    return {
+      where: { id },
+      data,
+    };
+  }
+
+  findOneByKey(params: OrderFindByKeyParams): Prisma.OrderFindFirstArgs {
+    const { excludes = {}, ...rest } = params;
+    return {
+      where: {
+        ...rest,
+        ...Object.fromEntries(
+          Object.entries(excludes).map(([key, value]) => [
+            key,
+            { notIn: value },
+          ]),
+        ),
+        deletedAt: null,
+      },
+      include: {
+        orderItems: true,
+        user: true,
+      },
+    };
+  }
+
+  findManyByKey(params: OrderFindManyByKeyParams): Prisma.OrderFindManyArgs {
+    const { excludes = {}, ...rest } = params;
+
+    return {
+      where: {
+        ...rest,
+        ...Object.fromEntries(
+          Object.entries(excludes).map(([key, value]) => [
+            key,
+            { notIn: value },
+          ]),
+        ),
+        deletedAt: null,
+      },
+      include: {
+        orderItems: true,
+      },
+    };
+  }
+
+  deleteByKey(params: OrderPrimaryKey): Prisma.OrderDeleteArgs {
+    const { id } = params;
+
+    return {
+      where: {
+        id,
       },
     };
   }

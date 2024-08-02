@@ -1,5 +1,5 @@
 import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
-import { WEBHOOK_EVENT } from 'src/webhooks/constants/webhook-event.constant';
+import { WEBHOOK_EVENT } from 'src/webhooks/clerk/constants/webhook-event.constant';
 import { ClerkWebhookService } from '../services';
 import { UserWebhookEvent } from '@clerk/clerk-sdk-node';
 import { UpdateProfileDto } from '../dtos';

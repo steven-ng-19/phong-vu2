@@ -6,3 +6,5 @@ export * from './product.error';
 export * from './address.error';
 export * from './promotion.error';
 export * from './cart.error';
+export * from './order.error';
+export * from './payment.error';
