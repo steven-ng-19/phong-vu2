@@ -4,7 +4,7 @@ import {
   CREATE_PARAMS_WITHOUT_FIELDS,
   UPDATE_PARAMS_WITHOUT_FIELDS,
 } from '@common/constants';
-import { EntityNotInFilter, EntityWithoutFields } from '@common/types';
+import { EntityNotInFilter, OptionalNullableFields } from '@common/types';
 
 import { CardDto } from '../entities';
 
@@ -27,13 +27,12 @@ export type CardFindByConditionsParams = Partial<Card> & {
   excludes?: EntityNotInFilter<Card>;
 };
 
-export type CardCreateParams = EntityWithoutFields<
-  Card,
-  (typeof CREATE_PARAMS_WITHOUT_FIELDS)[number]
+export type CardCreateParams = OptionalNullableFields<
+  Omit<Card, (typeof CREATE_PARAMS_WITHOUT_FIELDS)[number]>
 >;
 
 export type CardUpdateParams = Partial<
-  EntityWithoutFields<Card, (typeof UPDATE_PARAMS_WITHOUT_FIELDS)[number]>
+  Omit<Card, (typeof UPDATE_PARAMS_WITHOUT_FIELDS)[number]>
 >;
 
 export type CardPrimaryKey = Pick<Card, 'id'>;

@@ -4,7 +4,7 @@ import {
   CREATE_PARAMS_WITHOUT_FIELDS,
   UPDATE_PARAMS_WITHOUT_FIELDS,
 } from '@common/constants';
-import { EntityNotInFilter, EntityWithoutFields } from '@common/types';
+import { EntityNotInFilter, OptionalNullableFields } from '@common/types';
 
 import { AddressDto } from '../dtos';
 
@@ -24,14 +24,12 @@ export type AddressFindByKeyParams = Zod.infer<
 > & {
   excludes?: EntityNotInFilter<Address>;
 };
-
-export type AddressCreateParams = EntityWithoutFields<
-  Address,
-  (typeof CREATE_PARAMS_WITHOUT_FIELDS)[number]
+export type AddressCreateParams = OptionalNullableFields<
+  Omit<Address, (typeof CREATE_PARAMS_WITHOUT_FIELDS)[number]>
 >;
 
 export type AddressUpdateParams = Partial<
-  EntityWithoutFields<Address, (typeof UPDATE_PARAMS_WITHOUT_FIELDS)[number]>
+  Omit<Address, (typeof UPDATE_PARAMS_WITHOUT_FIELDS)[number]>
 >;
 
 export type AddressPrimaryKey = Pick<Address, 'id'>;

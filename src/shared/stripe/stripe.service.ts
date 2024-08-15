@@ -1,4 +1,10 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import * as fs from 'fs';
+
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { CONFIG_VAR } from '@config/config.constant';
 import { ConfigService } from '@nestjs/config';
@@ -87,11 +93,141 @@ export class StripeService {
         // payment_method: paymentMethodId,
         metadata,
         confirm,
+        capture_method: 'automatic',
       };
+
+      const extanalAccount = await this._stripe.accounts.createExternalAccount(
+        'acct_1032D82eZvKYlo2C',
+
+        {
+          external_account: {
+            account_number: '000123456789',
+            object: 'bank_account',
+            country: 'US',
+            currency: 'usd',
+            routing_number: '110000000',
+            account_holder_name: 'Jenny Rosen',
+            account_holder_type: 'individual',
+          },
+        },
+      );
 
       return this._stripe.paymentIntents.create(params);
     } catch (error) {
       throw new BadRequestException(error);
     }
+  }
+
+  async createExternalAccount({
+    accountId,
+  }: {
+    accountId: string;
+  }): Promise<Stripe.Response<Stripe.ExternalAccount>> {
+    try {
+      const params: Stripe.AccountCreateExternalAccountParams = {
+        external_account: {
+          account_number: '000123456', // Số tài khoản ngân hàng giả
+          object: 'bank_account',
+          country: 'SG',
+          currency: 'sgd',
+          routing_number: '7171-001', // Mã ngân hàng giả
+          account_holder_name: 'Jenny Rosen',
+          account_holder_type: 'individual',
+        },
+      };
+
+      const extanalAccount = await this._stripe.accounts.createExternalAccount(
+        accountId,
+        params,
+      );
+
+      return extanalAccount;
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
+
+  async createAccount({
+    email,
+  }: {
+    email: string;
+  }): Promise<Stripe.Response<Stripe.Account>> {
+    try {
+      const params: Stripe.AccountCreateParams = {
+        email: email,
+        business_type: 'individual',
+        type: 'custom',
+      };
+
+      const account = await this._stripe.accounts.create(params);
+
+      return account;
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
+
+  async getAccount(accountId: string) {
+    return (await this._stripe.accounts.retrieve(accountId)).requirements;
+  }
+
+  async uploadFile(type: string) {
+    const fp = fs.readFileSync('./logo.jpg') as Buffer;
+
+    const upload = await this._stripe.files.create({
+      file: {
+        data: fp,
+        name: 'business_icon',
+        type: 'application/octet-stream',
+      },
+      purpose: type as any,
+    });
+
+    return upload;
+  }
+
+  async updateAccount(accountId: string): Promise<Stripe.Account> {
+    return this._stripe.accounts.update(accountId, {
+      business_profile: {
+        url: 'https://accessible.stripe.com',
+      },
+      individual: {
+        id_number: '000000000',
+        email: 'NnVQz@example.com',
+        phone: '+65 6123 4567',
+        address: {
+          line1: 'address_full_match',
+          country: 'SG',
+        },
+        verification: {
+          document: {
+            front: 'file_identity_document_success',
+            // back: 'file_identity_document_success',
+          },
+        },
+        full_name_aliases: ['Jenny Rosen'],
+        dob: {
+          day: 1,
+          month: 1,
+          year: 1900,
+        },
+        registered_address: {
+          line1: 'address_full_match',
+        },
+      },
+      tos_acceptance: {
+        date: 1609798905,
+        ip: '8.8.8.8',
+      },
+    });
+  }
+
+  async createAccountLink(accountId: string) {
+    return this._stripe.accountLinks.create({
+      account: accountId,
+      type: 'account_onboarding',
+      return_url: 'https://stripe.com',
+      refresh_url: 'https://stripe.com',
+    });
   }
 }

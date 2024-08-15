@@ -55,4 +55,5 @@ export const ConfigSchema = Zod.object({
   [CONFIG_VAR.STRIPE_SECRET_KEY]: Zod.string().trim(),
   [CONFIG_VAR.STRIPE_PUBLISH_KEY]: Zod.string().trim(),
   [CONFIG_VAR.STRIPE_WEB_HOOK_SECRET]: Zod.string().trim(),
+  [CONFIG_VAR.STRIPE_WEB_HOOK_SECRET_CONNECTED]: Zod.string().trim(),
 });

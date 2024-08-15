@@ -36,7 +36,7 @@ export class AuthService {
     });
 
     // check usr exist
-    if (user) {
+    if (user || user) {
       throw new ConflictException(AUTH_ERRORS.EMAIL_ALREADY_EXISTS);
     }
 
@@ -53,6 +53,40 @@ export class AuthService {
 
     // create account in system
     await this._userService.create(params);
+    return {
+      success: true,
+    };
+  }
+
+  async repairPartnerRegister(
+    data: RegisterRequestDto,
+  ): Promise<SuccessResponse<undefined>> {
+    const payload = await this._verifyToken(
+      data.token,
+      this._configService.getOrThrow(CONFIG_VAR.CLERK_JWT_KEY),
+    );
+
+    const user = await this._userService.findOneByClerkId({
+      clerkId: payload.userId,
+    });
+
+    // check usr exist
+    if (user) throw new ConflictException(AUTH_ERRORS.EMAIL_ALREADY_EXISTS);
+
+    const params: UserCreateParams = {
+      clerkId: payload.userId,
+      email: payload.email,
+      firstName: payload.firstName ?? 'Unknown',
+      lastName: payload.lastName ?? 'Unknown',
+      gender: Gender.MALE,
+      phone: payload.phone ?? 'Unknown',
+      userName: payload.userName ?? 'Unknown',
+      role: UserRole.REPAIR_PARTNER,
+    };
+
+    // create account in system
+    const newUser = await this._userService.create(params);
+
     return {
       success: true,
     };

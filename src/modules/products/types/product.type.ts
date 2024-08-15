@@ -4,7 +4,7 @@ import {
   CREATE_PARAMS_WITHOUT_FIELDS,
   UPDATE_PARAMS_WITHOUT_FIELDS,
 } from '@common/constants';
-import { EntityNotInFilter, EntityWithoutFields } from '@common/types';
+import { EntityNotInFilter, OptionalNullableFields } from '@common/types';
 
 import { ProductDto } from '../dtos';
 
@@ -21,18 +21,17 @@ export type ProductFindByKeyParams = Zod.infer<
 };
 
 export type ProductFindByConditionsParams = Partial<
-  EntityWithoutFields<Product, 'galleries'>
+  Omit<Product, 'galleries'>
 > & {
   excludes?: EntityNotInFilter<Product>;
 };
 
-export type ProductCreateParams = EntityWithoutFields<
-  Product,
-  (typeof CREATE_PARAMS_WITHOUT_FIELDS)[number]
+export type ProductCreateParams = OptionalNullableFields<
+  Omit<Product, (typeof CREATE_PARAMS_WITHOUT_FIELDS)[number]>
 >;
 
 export type ProductUpdateParams = Partial<
-  EntityWithoutFields<Product, (typeof UPDATE_PARAMS_WITHOUT_FIELDS)[number]>
+  Omit<Product, (typeof UPDATE_PARAMS_WITHOUT_FIELDS)[number]>
 >;
 
 export type ProductPrimaryKey = Pick<Product, 'id'>;

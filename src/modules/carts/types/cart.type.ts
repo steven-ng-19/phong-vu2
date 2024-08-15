@@ -4,7 +4,7 @@ import {
   CREATE_PARAMS_WITHOUT_FIELDS,
   UPDATE_PARAMS_WITHOUT_FIELDS,
 } from '@common/constants';
-import { EntityNotInFilter, EntityWithoutFields } from '@common/types';
+import { EntityNotInFilter, OptionalNullableFields } from '@common/types';
 
 import { CartDto } from '../entities';
 
@@ -38,13 +38,12 @@ export type CartFindByConditionParams = Partial<Cart> & {
   excludes?: EntityNotInFilter<Cart>;
 };
 
-export type CartCreateParams = EntityWithoutFields<
-  Cart,
-  (typeof CREATE_PARAMS_WITHOUT_FIELDS)[number]
+export type CartCreateParams = OptionalNullableFields<
+  Omit<Cart, (typeof CREATE_PARAMS_WITHOUT_FIELDS)[number]>
 >;
 
 export type CartUpdateParams = Partial<
-  EntityWithoutFields<Cart, (typeof UPDATE_PARAMS_WITHOUT_FIELDS)[number]>
+  Omit<Cart, (typeof UPDATE_PARAMS_WITHOUT_FIELDS)[number]>
 >;
 
 export type CartPrimaryKey = Pick<Cart, 'id'>;

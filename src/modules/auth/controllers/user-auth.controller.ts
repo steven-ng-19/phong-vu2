@@ -9,10 +9,7 @@ import { SuccessResponse } from '@common/types';
 
 @Controller('user/auth')
 export class UserAuthController {
-  constructor(
-    private readonly _authService: AuthService,
-    private readonly _clerkService: ClerkService,
-  ) {}
+  constructor(private readonly _authService: AuthService) {}
 
   @Post('register')
   @UsePipes(ZodValidationPipe)

@@ -1,11 +1,8 @@
 import * as Zod from 'zod';
 
-import {
-  CREATE_PARAMS_WITHOUT_FIELDS,
-  UPDATE_PARAMS_WITHOUT_FIELDS,
-} from '@common/constants';
-import { EntityNotInFilter, EntityWithoutFields } from '@common/types';
+import { EntityNotInFilter, OptionalNullableFields } from '@common/types';
 
+import { CREATE_PARAMS_WITHOUT_FIELDS } from '@common/constants';
 import { OrderDto } from '../dtos';
 
 export type Order = OrderDto;
@@ -33,9 +30,8 @@ export type OrderFindByConditionsParams = Partial<Order> & {
   excludes?: EntityNotInFilter<Order>;
 };
 
-export type OrderCreateParams = EntityWithoutFields<
-  Order,
-  (typeof CREATE_PARAMS_WITHOUT_FIELDS)[number]
+export type OrderCreateParams = OptionalNullableFields<
+  Omit<Order, (typeof CREATE_PARAMS_WITHOUT_FIELDS)[number]>
 >;
 
 export type OrderUpdateParams = Pick<Order, 'status'>;

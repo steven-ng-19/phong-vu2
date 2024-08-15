@@ -3,6 +3,7 @@ import { ClerkWebhookModule, StripeWebHookModule } from './webhooks';
 
 import { AddressModule } from '@modules/addresses/address.module';
 import { AllExceptionsFilter } from '@common/filters';
+import { AppController } from './app.controller';
 import { AuthModule } from '@modules/auth/auth.module';
 import { CartModule } from '@modules/carts/cart.module';
 import { CategoryModule } from '@modules/categories/category.module';
@@ -58,7 +59,7 @@ import { UserModule } from '@modules/users/user.module';
     ClerkWebhookModule,
     StripeWebHookModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },
     { provide: APP_INTERCEPTOR, useClass: ResponseTransformInterceptor },

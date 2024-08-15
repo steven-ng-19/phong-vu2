@@ -6,7 +6,6 @@ import {
   Post,
   RawBodyRequest,
   Req,
-  Res,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { StripeService } from '@shared/stripe/stripe.service';
@@ -14,7 +13,7 @@ import { webHookHandlers } from '../configs';
 import Stripe from 'stripe';
 import { OrderService } from '@modules/orders/services';
 
-@Controller('webhook/stripe')
+@Controller('webhook/stripe/your-account')
 export class StripeWebHookController {
   constructor(
     private readonly _stripeService: StripeService,

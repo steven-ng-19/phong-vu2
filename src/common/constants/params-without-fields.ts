@@ -1,6 +1,7 @@
 export const CREATE_PARAMS_WITHOUT_FIELDS = [
   'createdAt',
   'updatedAt',
+  'deletedAt',
   'id',
 ] as const;
 
